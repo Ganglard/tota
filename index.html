@@ -1,415 +1,822 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <title>Commande d'Armes</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #18191a;
-      color: #e4e4c3;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    h1, h2, h3 {
-      text-align: center;
-      color: #808000;
-      margin-top: 30px;
-      text-shadow: 0 2px 8px #3d3d00;
-    }
-    #armes, #munitions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      justify-content: center;
-      margin: 20px auto 10px auto;
-      max-width: 1100px;
-    }
-    .arme-btn, .munition-btn {
-      background: #23272b;
-      border: 2px solid #a0b46a;
-      border-radius: 14px;
-      color: #e4e4c3;
-      padding: 14px 18px 10px 18px;
-      min-width: 120px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 1em;
-      transition: background 0.2s, border 0.2s, color 0.2s;
-      box-shadow: 0 2px 8px #1a1d20;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .arme-btn:hover, .munition-btn:hover {
-      background: #35391f;
-      border-color: #bfcf87;
-      color: #fffbe6;
-    }
-    .prix {
-      color: #a0b46a;
-      font-size: 0.98em;
-      margin-top: 4px;
-    }
-    #panier, #formulaire-nom, #commandes {
-      background: #23272b;
-      border-radius: 18px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-      margin: 20px auto;
-      padding: 24px 32px;
-      max-width: 600px;
-      border: 2px solid #a0b46a;
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    .panier-item {
-      background: #262a2f;
-      border-radius: 8px;
-      margin-bottom: 8px;
-      padding: 8px 14px;
-      border-left: 4px solid #a0b46a;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-    }
-    .panier-controls {
-      display: flex;
-      align-items: center;
-      gap: 3px;
-    }
-    .panier-btn {
-      background: #a0b46a;
-      color: #23272b;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.1em;
-      font-weight: bold;
-      width: 28px;
-      height: 28px;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-      margin: 0 2px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .panier-btn:hover {
-      background: #808000;
-      color: #fff;
-    }
-    .remove-btn {
-      background: #b94a48;
-      color: #fff;
-      border-radius: 50%;
-      border: none;
-      width: 22px;
-      height: 22px;
-      font-size: 1em;
-      font-weight: bold;
-      margin-left: 8px;
-      cursor: pointer;
-      transition: background 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .remove-btn:hover {
-      background: #e74c3c;
-    }
-    button, .arme-btn, .munition-btn {
-      font-family: inherit;
-      font-weight: bold;
-    }
-    input[type="text"] {
-      border-radius: 7px;
-      border: 1.5px solid #bfcf87;
-      padding: 7px 12px;
-      margin-left: 8px;
-      background: #18191a;
-      color: #e4e4c3;
-      outline: none;
-      transition: border 0.2s;
-    }
-    input[type="text"]:focus {
-      border: 2px solid #a0b46a;
-      background: #23272b;
-    }
-    table {
-      border-collapse: separate;
-      border-spacing: 0;
-      width: 100%;
-      background: #23272b;
-      border-radius: 12px;
-      overflow: hidden;
-      margin-top: 10px;
-      border: 2px solid #a0b46a;
-    }
-    th, td {
-      border: none;
-      padding: 10px;
-      text-align: left;
-      vertical-align: top;
-    }
-    th {
-      background: #1a1d20;
-      color: #808000;
-      font-weight: bold;
-      border-bottom: 2px solid #bfcf87;
-    }
-    tr:nth-child(even) td {
-      background: #25282c;
-    }
-    tr:nth-child(odd) td {
-      background: #23272b;
-    }
-    .reset-btn {
-      background: #b94a48;
-      color: #fff;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-bottom: 14px;
-      transition: background 0.2s;
-    }
-    .reset-btn:hover {
-      background: #e74c3c;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Commande d'Armes GTA RP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #18191a;
+            color: #e4e4c3;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            position: relative;
+        }
+        h1, h2, h3 {
+            text-align: center;
+            color: #808000;
+            margin-top: 30px;
+            text-shadow: 0 2px 8px #3d3d00;
+        }
+        #armes, #munitions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            justify-content: center;
+            margin: 20px auto 10px auto;
+            max-width: 1100px;
+        }
+        .arme-btn, .munition-btn {
+            background: #23272b;
+            border: 2px solid #a0b46a;
+            border-radius: 14px;
+            color: #e4e4c3;
+            padding: 14px 18px 10px 18px;
+            min-width: 120px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background 0.2s, border 0.2s, color 0.2s;
+            box-shadow: 0 2px 8px #1a1d20;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .arme-btn:hover, .munition-btn:hover {
+            background: #35391f;
+            border-color: #bfcf87;
+            color: #fffbe6;
+        }
+        .prix {
+            color: #a0b46a;
+            font-size: 0.98em;
+            margin-top: 4px;
+        }
+        #panier, #formulaire-nom, #commandes {
+            background: #23272b;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+            margin: 20px auto;
+            padding: 24px 32px;
+            max-width: 600px;
+            border: 2px solid #a0b46a;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        .panier-item {
+            background: #262a2f;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 8px 14px;
+            border-left: 4px solid #a0b46a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .panier-controls {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        .panier-btn {
+            background: #a0b46a;
+            color: #23272b;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            margin: 0 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .panier-btn:hover {
+            background: #808000;
+            color: #fff;
+        }
+        .remove-btn {
+            background: #b94a48;
+            color: #fff;
+            border-radius: 50%;
+            border: none;
+            width: 22px;
+            height: 22px;
+            font-size: 1em;
+            font-weight: bold;
+            margin-left: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .remove-btn:hover {
+            background: #e74c3c;
+        }
+        .total-block {
+            margin: 10px 0 15px 0;
+            font-weight: bold;
+            color: #bfcf87;
+            background: #23272b;
+            border-radius: 10px;
+            padding: 8px 14px;
+            border: 1.5px solid #a0b46a;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2px;
+        }
+        .total-label {
+            color: #a0b46a;
+        }
+        .total-value {
+            color: #fffbe6;
+        }
+        button, .arme-btn, .munition-btn {
+            font-family: inherit;
+            font-weight: bold;
+        }
+        input[type="text"] {
+            border-radius: 7px;
+            border: 1.5px solid #bfcf87;
+            padding: 7px 12px;
+            margin-left: 8px;
+            background: #18191a;
+            color: #e4e4c3;
+            outline: none;
+            transition: border 0.2s;
+        }
+        input[type="text"]:focus {
+            border: 2px solid #a0b46a;
+            background: #23272b;
+        }
+        table {
+            border-collapse: separate;
+            border-spacing: 0;
+            width: 100%;
+            background: #23272b;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 10px;
+            border: 2px solid #a0b46a;
+        }
+        th, td {
+            border: none;
+            padding: 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background: #1a1d20;
+            color: #808000;
+            font-weight: bold;
+            border-bottom: 2px solid #bfcf87;
+        }
+        tr:nth-child(even) td {
+            background: #25282c;
+        }
+        tr:nth-child(odd) td {
+            background: #23272b;
+        }
+        .reset-btn {
+            background: #b94a48;
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 14px;
+            transition: background 0.2s;
+        }
+        .reset-btn:hover {
+            background: #e74c3c;
+        }
+        .benefice {
+            color: #6fcf97;
+            font-weight: bold;
+        }
+        .action-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8em;
+            margin: 2px;
+            transition: background 0.2s;
+        }
+        .action-btn:hover {
+            background: #2980b9;
+        }
+        .edit-btn {
+            background: #f39c12;
+        }
+        .edit-btn:hover {
+            background: #d35400;
+        }
+        .delete-btn {
+            background: #e74c3c;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .discord-section {
+            background: #23272b;
+            border: 2px solid #2ecc71;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 12px 16px;
+            width: 300px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            opacity: 0.9;
+            transition: all 0.3s ease;
+        }
+        .discord-section:hover {
+            opacity: 1;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
+        }
+        .discord-title {
+            color: #2ecc71;
+            font-size: 1em;
+            margin: 0 0 8px 0;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .discord-input {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .discord-input label {
+            color: #2ecc71;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .discord-input input {
+            background: #18191a;
+            border: 1px solid #2ecc71;
+            color: #e4e4c3;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            width: 100%;
+        }
+        .discord-input small {
+            color: #a0b46a;
+            font-size: 0.75em;
+            line-height: 1.3;
+        }
+        .toggle-discord {
+            background: none;
+            border: none;
+            color: #2ecc71;
+            font-size: 1.2em;
+            cursor: pointer;
+            padding: 0;
+        }
+        .total-general {
+            background: #1a1d20;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 20px;
+            border: 2px solid #808000;
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+        }
+        .total-general-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .total-general-label {
+            color: #a0b46a;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .total-general-value {
+            color: #fffbe6;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .benefice-total {
+            color: #6fcf97;
+        }
+    </style>
 </head>
 <body>
-  <h1>Commande d'Armes GTA RP</h1>
+    <h1>Commande d'Armes GTA RP</h1>
 
-  <h3>Armes</h3>
-  <div id="armes"></div>
+    <h3>Armes</h3>
+    <div id="armes"></div>
 
-  <h3>Munitions</h3>
-  <div id="munitions"></div>
+    <h3>Munitions</h3>
+    <div id="munitions"></div>
 
-  <div id="panier">
-    <h2>Mon panier</h2>
-    <ul id="liste-panier"></ul>
-    <div id="total-panier" style="margin:10px 0 15px 0;font-weight:bold;color:#bfcf87;"></div>
-    <button onclick="validerCommande()">Valider la commande</button>
-  </div>
+    <div id="panier">
+        <h2>Mon panier</h2>
+        <ul id="liste-panier"></ul>
+        <div id="total-panier" class="total-block"></div>
+        <button onclick="validerCommande()">Valider la commande</button>
+    </div>
 
-  <div id="formulaire-nom" style="display:none;">
-    <h2>Finaliser la commande</h2>
-    <label>Nom de l'acheteur : <input type="text" id="nom-acheteur"></label>
-    <button onclick="enregistrerCommande()">Envoyer la commande</button>
-  </div>
+    <div id="formulaire-nom" style="display:none;">
+        <h2>Finaliser la commande</h2>
+        <label>Nom de l'acheteur : <input type="text" id="nom-acheteur"></label>
+        <button onclick="enregistrerCommande()">Envoyer la commande</button>
+        <button onclick="annulerCommande()" style="background: #b94a48; margin-left: 10px;">Annuler</button>
+    </div>
 
-  <div id="commandes">
-    <h2>Liste des commandes</h2>
-    <button class="reset-btn" onclick="resetCommandes()">Réinitialiser les commandes de la semaine</button>
-    <table>
-      <thead>
-        <tr><th>Nom de l'acheteur</th><th>Armes commandées</th><th>Total</th></tr>
-      </thead>
-      <tbody id="liste-commandes"></tbody>
-    </table>
-  </div>
+    <div class="discord-section">
+        <h2 class="discord-title">
+            <span>Webhook Discord</span>
+            <button class="toggle-discord" onclick="toggleDiscordSection()">−</button>
+        </h2>
+        <div class="discord-input" id="discord-input-container">
+            <label for="discord-webhook">URL du Webhook:</label>
+            <input type="text" id="discord-webhook" placeholder="https://discord.com/api/webhooks/..." value="">
+            <small>URL pour envoyer les commandes sur Discord</small>
+        </div>
+    </div>
 
-  <script>
-    // Séparation armes et munitions
-    const armes = [
-      { nom: "PETOIRE", prix_inter: 30000, prix_vente: 40000 },
-      { nom: "BERETTA", prix_inter: 53000, prix_vente: 70000 },
-      { nom: "GLOCK", prix_inter: 60000, prix_vente: 80000 },
-      { nom: "P. LOURD", prix_inter: 102500, prix_vente: 135000 },
-      { nom: "TEC 9", prix_inter: 320000, prix_vente: 420000 },
-      { nom: "SKORPION", prix_inter: 320000, prix_vente: 420000 },
-      { nom: "OLD SCIE", prix_inter: 375000, prix_vente: 485000 },
-      { nom: "486 SCIE", prix_inter: 450500, prix_vente: 585000 },
-      { nom: "UZI", prix_inter: 700000, prix_vente: 800000 },
-      { nom: "AK U", prix_inter: 1050000, prix_vente: 1350000 },
-      { nom: "AK 47", prix_inter: 1695842, prix_vente: 2200000 }
-    ];
+    <div id="commandes">
+        <h2>Liste des commandes</h2>
+        <button class="reset-btn" onclick="resetCommandes()">Réinitialiser les commandes de la semaine</button>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom de l'acheteur</th>
+                    <th>Armes commandées</th>
+                    <th>Total</th>
+                    <th>Bénéfice</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="liste-commandes"></tbody>
+        </table>
+        
+        <div id="total-general" class="total-general">
+            <div class="total-general-item">
+                <span class="total-general-label">Total Acheteur (semaine)</span>
+                <span id="total-acheteur" class="total-general-value">0$</span>
+            </div>
+            <div class="total-general-item">
+                <span class="total-general-label">Total Revendeur (semaine)</span>
+                <span id="total-revendeur" class="total-general-value">0$</span>
+            </div>
+            <div class="total-general-item">
+                <span class="total-general-label">Bénéfice Total (semaine)</span>
+                <span id="benefice-total" class="total-general-value benefice-total">0$</span>
+            </div>
+        </div>
+    </div>
 
-    const munitions = [
-      { nom: "45 ACP", prix_inter: 4000, prix_vente: 4500 },
-      { nom: "9MM", prix_inter: 4500, prix_vente: 5500 },
-      { nom: "CAL 12", prix_inter: 6200, prix_vente: 7500 },
-      { nom: "7MM / 7.62", prix_inter: 6500, prix_vente: 8000 }
-    ];
+    <script>
+        // Variable pour stocker l'URL du webhook
+        let DISCORD_WEBHOOK_URL = localStorage.getItem('discordWebhookUrl') || "";
+        let discordSectionExpanded = true;
+        let currentEditIndex = -1; // Index de la commande en cours d'édition (-1 si nouvelle commande)
+        let discordMessageIds = JSON.parse(localStorage.getItem('discordMessageIds')) || {};
 
-    let typePrix = "inter"; // ou "vente"
-    let panier = [];
+        const armes = [
+            { nom: "PETOIRE", prix_inter: 30000, prix_vente: 40000 },
+            { nom: "BERETTA", prix_inter: 53000, prix_vente: 70000 },
+            { nom: "GLOCK", prix_inter: 60000, prix_vente: 80000 },
+            { nom: "P. LOURD", prix_inter: 102500, prix_vente: 135000 },
+            { nom: "TEC 9", prix_inter: 320000, prix_vente: 420000 },
+            { nom: "SKORPION", prix_inter: 320000, prix_vente: 420000 },
+            { nom: "OLD SCIE", prix_inter: 375000, prix_vente: 485000 },
+            { nom: "486 SCIE", prix_inter: 450500, prix_vente: 585000 },
+            { nom: "UZI", prix_inter: 700000, prix_vente: 800000 },
+            { nom: "AK U", prix_inter: 1050000, prix_vente: 1350000 },
+            { nom: "AK 47", prix_inter: 1695842, prix_vente: 2200000 }
+        ];
 
-    // Charge les commandes sauvegardées au démarrage
-    let commandes = JSON.parse(localStorage.getItem('commandesGTA')) || [];
+        const munitions = [
+            { nom: "45 ACP", prix_inter: 4000, prix_vente: 4500 },
+            { nom: "9MM", prix_inter: 4500, prix_vente: 5500 },
+            { nom: "CAL 12", prix_inter: 6200, prix_vente: 7500 },
+            { nom: "7MM / 7.62", prix_inter: 6500, prix_vente: 8000 }
+        ];
 
-    function afficherArmes() {
-      const div = document.getElementById('armes');
-      div.innerHTML = '';
-      armes.forEach(arme => {
-        const prix = arme.prix_inter.toLocaleString() + '$';
-        const btn = document.createElement('div');
-        btn.className = 'arme-btn';
-        btn.onclick = () => ajouterAuPanier(arme.nom);
-        btn.innerHTML = `<span>${arme.nom}</span><span class="prix">${prix}</span>`;
-        div.appendChild(btn);
-      });
-    }
+        let typePrix = "inter"; // ou "vente"
+        let panier = [];
+        let commandes = JSON.parse(localStorage.getItem('commandesGTA')) || [];
 
-    function afficherMunitions() {
-      const div = document.getElementById('munitions');
-      div.innerHTML = '';
-      munitions.forEach(mun => {
-        const prix = mun.prix_inter.toLocaleString() + '$';
-        const btn = document.createElement('div');
-        btn.className = 'munition-btn';
-        btn.onclick = () => ajouterAuPanier(mun.nom);
-        btn.innerHTML = `<span>${mun.nom}</span><span class="prix">${prix}</span>`;
-        div.appendChild(btn);
-      });
-    }
-
-    function ajouterAuPanier(nom) {
-      panier.push(nom);
-      afficherPanier();
-    }
-
-    function modifierQuantite(nom, delta) {
-      const index = panier.findIndex(item => item === nom);
-      if (delta === -1) {
-        // Retire un exemplaire
-        if (index !== -1) panier.splice(index, 1);
-      } else if (delta === 1) {
-        panier.push(nom);
-      }
-      afficherPanier();
-    }
-
-    function supprimerDuPanier(nom) {
-      panier = panier.filter(item => item !== nom);
-      afficherPanier();
-    }
-
-    function afficherPanier() {
-      const ul = document.getElementById('liste-panier');
-      ul.innerHTML = '';
-      const compteur = {};
-      let total = 0;
-      panier.forEach(nom => {
-        if (compteur[nom]) {
-          compteur[nom]++;
-        } else {
-          compteur[nom] = 1;
+        function toggleDiscordSection() {
+            const container = document.getElementById('discord-input-container');
+            const toggleBtn = document.querySelector('.toggle-discord');
+            
+            discordSectionExpanded = !discordSectionExpanded;
+            
+            if (discordSectionExpanded) {
+                container.style.display = 'flex';
+                toggleBtn.textContent = '−';
+            } else {
+                container.style.display = 'none';
+                toggleBtn.textContent = '+';
+            }
         }
-      });
-      Object.entries(compteur).forEach(([nom, quantite]) => {
-        let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
-        const prix = typePrix === "inter" ? (item ? item.prix_inter : 0) : (item ? item.prix_vente : 0);
-        const li = document.createElement('li');
-        li.className = 'panier-item';
-        li.innerHTML = `
-          <span>${nom} - ${prix.toLocaleString()}$</span>
-          <div class="panier-controls">
-            <button class="panier-btn" onclick="modifierQuantite('${nom}',-1)" title="Retirer un">−</button>
-            <span style="min-width:22px;text-align:center;">${quantite}</span>
-            <button class="panier-btn" onclick="modifierQuantite('${nom}',1)" title="Ajouter un">+</button>
-            <button class="remove-btn" onclick="supprimerDuPanier('${nom}')" title="Supprimer"><span>&times;</span></button>
-            <span style="margin-left:10px; color:#a0b46a;">${(prix * quantite).toLocaleString()}$</span>
-          </div>
-        `;
-        ul.appendChild(li);
-        total += prix * quantite;
-      });
-      document.getElementById('total-panier').textContent = total > 0 ? `Total : ${total.toLocaleString()}$` : '';
-    }
 
-    function validerCommande() {
-      if (panier.length === 0) {
-        alert("Votre panier est vide !");
-        return;
-      }
-      document.getElementById('formulaire-nom').style.display = 'block';
-    }
-
-    function enregistrerCommande() {
-      const nom = document.getElementById('nom-acheteur').value.trim();
-      if (!nom) {
-        alert("Veuillez entrer le nom de l'acheteur.");
-        return;
-      }
-      // Création de la commande à sauvegarder
-      const nouvelleCommande = { nom, items: [...panier] };
-
-      // Récupère les commandes déjà enregistrées dans le localStorage
-      let commandesSauvegardees = JSON.parse(localStorage.getItem('commandesGTA')) || [];
-
-      // Ajoute la nouvelle commande
-      commandesSauvegardees.push(nouvelleCommande);
-
-      // Sauvegarde le tout dans le localStorage
-      localStorage.setItem('commandesGTA', JSON.stringify(commandesSauvegardees));
-
-      // Continue le process normal
-      commandes.push(nouvelleCommande);
-      panier = [];
-      afficherPanier();
-      afficherCommandes();
-      document.getElementById('formulaire-nom').style.display = 'none';
-      document.getElementById('nom-acheteur').value = '';
-      alert("Commande enregistrée !");
-    }
-
-    function afficherCommandes() {
-      const tbody = document.getElementById('liste-commandes');
-      tbody.innerHTML = '';
-      commandes.forEach(cmd => {
-        const compteur = {};
-        let total = 0;
-        cmd.items.forEach(nom => {
-          if (compteur[nom]) {
-            compteur[nom]++;
-          } else {
-            compteur[nom] = 1;
-          }
+        // Au chargement de la page, mettre à jour l'input avec la valeur sauvegardée
+        document.addEventListener('DOMContentLoaded', function() {
+            const webhookInput = document.getElementById('discord-webhook');
+            webhookInput.value = DISCORD_WEBHOOK_URL;
+            
+            // Sauvegarder quand l'utilisateur modifie l'URL
+            webhookInput.addEventListener('change', function() {
+                DISCORD_WEBHOOK_URL = this.value;
+                localStorage.setItem('discordWebhookUrl', DISCORD_WEBHOOK_URL);
+            });
         });
-        const itemsAffichees = Object.entries(compteur)
-          .map(([nom, quantite]) => {
-            let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
-            const prix = typePrix === "inter" ? (item ? item.prix_inter : 0) : (item ? item.prix_vente : 0);
-            total += prix * quantite;
-            return quantite > 1
-              ? `${nom} x${quantite} - ${(prix * quantite).toLocaleString()}$`
-              : `${nom} - ${prix.toLocaleString()}$`;
-          })
-          .join('<br>');
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${cmd.nom}</td><td>${itemsAffichees}</td><td>${total.toLocaleString()}$</td>`;
-        tbody.appendChild(tr);
-      });
-    }
 
-    function resetCommandes() {
-      if (confirm("Es-tu sûr de vouloir supprimer toutes les commandes de la semaine ?")) {
-        localStorage.removeItem('commandesGTA');
-        commandes = [];
+        function afficherArmes() {
+            const div = document.getElementById('armes');
+            div.innerHTML = '';
+            armes.forEach(arme => {
+                const prix = arme.prix_inter.toLocaleString() + '$';
+                const btn = document.createElement('div');
+                btn.className = 'arme-btn';
+                btn.onclick = () => ajouterAuPanier(arme.nom);
+                btn.innerHTML = `<span>${arme.nom}</span><span class="prix">${prix}</span>`;
+                div.appendChild(btn);
+            });
+        }
+
+        function afficherMunitions() {
+            const div = document.getElementById('munitions');
+            div.innerHTML = '';
+            munitions.forEach(mun => {
+                const prix = mun.prix_inter.toLocaleString() + '$';
+                const btn = document.createElement('div');
+                btn.className = 'munition-btn';
+                btn.onclick = () => ajouterAuPanier(mun.nom);
+                btn.innerHTML = `<span>${mun.nom}</span><span class="prix">${prix}</span>`;
+                div.appendChild(btn);
+            });
+        }
+
+        function ajouterAuPanier(nom) {
+            panier.push(nom);
+            afficherPanier();
+        }
+
+        function modifierQuantite(nom, delta) {
+            const index = panier.findIndex(item => item === nom);
+            if (delta === -1) {
+                if (index !== -1) panier.splice(index, 1);
+            } else if (delta === 1) {
+                panier.push(nom);
+            }
+            afficherPanier();
+        }
+
+        function supprimerDuPanier(nom) {
+            panier = panier.filter(item => item !== nom);
+            afficherPanier();
+        }
+
+        function afficherPanier() {
+            const ul = document.getElementById('liste-panier');
+            ul.innerHTML = '';
+            const compteur = {};
+            let totalAcheteur = 0;
+            let totalRevendeur = 0;
+            panier.forEach(nom => {
+                if (compteur[nom]) {
+                    compteur[nom]++;
+                } else {
+                    compteur[nom] = 1;
+                }
+            });
+            Object.entries(compteur).forEach(([nom, quantite]) => {
+                let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
+                const prixAcheteur = item ? item.prix_inter : 0;
+                const prixRevendeur = item ? item.prix_vente : 0;
+                const li = document.createElement('li');
+                li.className = 'panier-item';
+                li.innerHTML = `
+                    <span>${nom}</span>
+                    <div class="panier-controls">
+                        <button class="panier-btn" onclick="modifierQuantite('${nom}',-1)" title="Retirer un">−</button>
+                        <span style="min-width:22px;text-align:center;">${quantite}</span>
+                        <button class="panier-btn" onclick="modifierQuantite('${nom}',1)" title="Ajouter un">+</button>
+                        <button class="remove-btn" onclick="supprimerDuPanier('${nom}')" title="Supprimer"><span>&times;</span></button>
+                        <span style="margin-left:10px; color:#a0b46a;">
+                            Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>
+                            Revendeur: ${(prixRevendeur * quantite).toLocaleString()}$
+                        </span>
+                    </div>
+                `;
+                ul.appendChild(li);
+                totalAcheteur += prixAcheteur * quantite;
+                totalRevendeur += prixRevendeur * quantite;
+            });
+
+            const totalDiv = document.getElementById('total-panier');
+            totalDiv.innerHTML = `
+                <div class="total-row"><span class="total-label">Total Acheteur :</span> <span class="total-value">${totalAcheteur.toLocaleString()}$</span></div>
+                <div class="total-row"><span class="total-label">Total Revendeur :</span> <span class="total-value">${totalRevendeur.toLocaleString()}$</span></div>
+                <div class="total-row"><span class="total-label">Bénéfice :</span> <span class="benefice">${(totalRevendeur - totalAcheteur).toLocaleString()}$</span></div>
+            `;
+        }
+
+        function validerCommande() {
+            if (panier.length === 0) {
+                alert("Votre panier est vide !");
+                return;
+            }
+            document.getElementById('formulaire-nom').style.display = 'block';
+        }
+
+        function annulerCommande() {
+            document.getElementById('formulaire-nom').style.display = 'none';
+            document.getElementById('nom-acheteur').value = '';
+            currentEditIndex = -1;
+        }
+
+        function enregistrerCommande() {
+            const nomAcheteur = document.getElementById('nom-acheteur').value.trim();
+            if (!nomAcheteur) {
+                alert("Veuillez entrer le nom de l'acheteur.");
+                return;
+            }
+            
+            const nouvelleCommande = { nom: nomAcheteur, items: [...panier] };
+            
+            if (currentEditIndex >= 0) {
+                // Modification d'une commande existante
+                commandes[currentEditIndex] = nouvelleCommande;
+            } else {
+                // Nouvelle commande
+                commandes.push(nouvelleCommande);
+            }
+            
+            localStorage.setItem('commandesGTA', JSON.stringify(commandes));
+
+            // Prepare the Discord message
+            const compteur = {};
+            let totalAcheteur = 0, totalRevendeur = 0;
+            nouvelleCommande.items.forEach(nomItem => {
+                if (compteur[nomItem]) compteur[nomItem]++;
+                else compteur[nomItem] = 1;
+            });
+
+            // Build the formatted item list for Discord
+            let itemListDiscord = "";
+            Object.entries(compteur).forEach(([nomItem, quantite]) => {
+                let item = armes.find(a => a.nom === nomItem) || munitions.find(m => m.nom === nomItem);
+                const prixAchat = item ? item.prix_inter : 0;
+                const prixVente = item ? item.prix_vente : 0;
+                const totalPrixAchatItem = prixAchat * quantite;
+                const totalPrixVenteItem = prixVente * quantite;
+
+                totalAcheteur += totalPrixAchatItem;
+                totalRevendeur += totalPrixVenteItem;
+
+                itemListDiscord += `
+**Item**: ${nomItem}
+**Quantité**: ${quantite}
+**Prix Achat**: ${prixAchat.toLocaleString()}$
+**Prix Vente**: ${prixVente.toLocaleString()}$
+`;
+            });
+            
+            const benefice = totalRevendeur - totalAcheteur;
+
+            const discordEmbed = {
+                title: currentEditIndex >= 0 ? "Commande Modifiée" : "Nouvelle Commande",
+                description: `Initiateur: **${nomAcheteur}**\n\n${itemListDiscord}`,
+                color: 65280, // Green color for the embed sidebar (decimal for #00FF00)
+                fields: [
+                    {
+                        name: "Total Achat",
+                        value: `${totalAcheteur.toLocaleString()}$`,
+                        inline: true
+                    },
+                    {
+                        name: "Total Vente",
+                        value: `${totalRevendeur.toLocaleString()}$`,
+                        inline: true
+                    },
+                    {
+                        name: "Bénéfice",
+                        value: `${benefice.toLocaleString()}$`,
+                        inline: true
+                    }
+                ],
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: "GTA RP Commands"
+                }
+            };
+
+
+            // Send to Discord (webhook)
+            if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord.com/api/webhooks/")) {
+                // For editing, Discord's API allows editing messages via PATCH, but deleting and re-sending is simpler with webhooks if you need to drastically change content.
+                // For this example, we'll delete the old message and send a new one for simplicity in updates.
+                if (currentEditIndex >= 0 && discordMessageIds[currentEditIndex]) {
+                    const deleteUrl = `${DISCORD_WEBHOOK_URL}/messages/${discordMessageIds[currentEditIndex]}`;
+                    fetch(deleteUrl, {
+                        method: "DELETE"
+                    }).catch(() => console.log("Échec de la suppression du message précédent"));
+                }
+
+                fetch(DISCORD_WEBHOOK_URL + "?wait=true", {  // Add ?wait=true to receive message ID
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ embeds: [discordEmbed] }) // Use embeds instead of content for a nicer look
+                }).then(response => response.json())
+                .then(data => {
+                    // Store the ID of the new message
+                    if (data.id) {
+                        if (currentEditIndex >= 0) {
+                            discordMessageIds[currentEditIndex] = data.id;
+                        } else {
+                            discordMessageIds[commandes.length - 1] = data.id;
+                        }
+                        localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
+                    }
+                    
+                    panier = [];
+                    afficherPanier();
+                    afficherCommandes();
+                    document.getElementById('formulaire-nom').style.display = 'none';
+                    document.getElementById('nom-acheteur').value = '';
+                    currentEditIndex = -1;
+                    alert(currentEditIndex >= 0 ? "Commande modifiée et envoyée sur Discord !" : "Commande enregistrée et envoyée sur Discord !");
+                }).catch((error) => {
+                    console.error("Error sending to Discord:", error);
+                    alert(currentEditIndex >= 0 ? "Commande modifiée, mais l'envoi Discord a échoué." : "Commande enregistrée, mais l'envoi Discord a échoué.");
+                    panier = [];
+                    afficherPanier();
+                    afficherCommandes();
+                    document.getElementById('formulaire-nom').style.display = 'none';
+                    document.getElementById('nom-acheteur').value = '';
+                    currentEditIndex = -1;
+                });
+            } else {
+                panier = [];
+                afficherPanier();
+                afficherCommandes();
+                document.getElementById('formulaire-nom').style.display = 'none';
+                document.getElementById('nom-acheteur').value = '';
+                currentEditIndex = -1;
+                alert(currentEditIndex >= 0 ? "Commande modifiée !" : "Commande enregistrée !");
+            }
+        }
+
+        function editerCommande(index) {
+            if (index >= 0 && index < commandes.length) {
+                currentEditIndex = index;
+                const commande = commandes[index];
+                document.getElementById('nom-acheteur').value = commande.nom;
+                panier = [...commande.items];
+                afficherPanier();
+                document.getElementById('formulaire-nom').style.display = 'block';
+            }
+        }
+
+        function supprimerCommande(index) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
+                // Delete the associated Discord message if it exists
+                if (discordMessageIds[index] && DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord.com/api/webhooks/")) {
+                    const deleteUrl = `${DISCORD_WEBHOOK_URL}/messages/${discordMessageIds[index]}`;
+                    fetch(deleteUrl, {
+                        method: "DELETE"
+                    }).catch(() => console.log("Échec de la suppression du message Discord"));
+                }
+                
+                // Delete the command
+                commandes.splice(index, 1);
+                // Adjust discordMessageIds keys after deletion to maintain correct mapping
+                const newDiscordMessageIds = {};
+                for(let i = 0; i < commandes.length; i++) {
+                    newDiscordMessageIds[i] = discordMessageIds[i > index ? i + 1 : i]; // Shift keys if needed
+                }
+                discordMessageIds = newDiscordMessageIds;
+                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
+                localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
+                afficherCommandes();
+                alert("Commande supprimée !");
+            }
+        }
+
+        function afficherCommandes() {
+            const tbody = document.getElementById('liste-commandes');
+            tbody.innerHTML = '';
+            
+            let totalAcheteurSemaine = 0;
+            let totalRevendeurSemaine = 0;
+            let beneficeTotal = 0;
+            
+            commandes.forEach((cmd, index) => {
+                const compteur = {};
+                let totalAcheteur = 0;
+                let totalRevendeur = 0;
+                cmd.items.forEach(nom => {
+                    if (compteur[nom]) {
+                        compteur[nom]++;
+                    } else {
+                        compteur[nom] = 1;
+                    }
+                });
+                const itemsAffichees = Object.entries(compteur)
+                    .map(([nom, quantite]) => {
+                        let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
+                        const prixAcheteur = item ? item.prix_inter : 0;
+                        const prixRevendeur = item ? item.prix_vente : 0;
+                        totalAcheteur += prixAcheteur * quantite;
+                        totalRevendeur += prixRevendeur * quantite;
+                        return quantite > 1
+                            ? `${nom} x${quantite}<br>
+                                <span style="color:#a0b46a;">Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>Revendeur: ${(prixRevendeur * quantite).toLocaleString()}$</span>`
+                            : `${nom}<br>
+                                <span style="color:#a0b46a;">Acheteur: ${prixAcheteur.toLocaleString()}$<br>Revendeur: ${prixRevendeur.toLocaleString()}$</span>`;
+                    })
+                    .join('<hr style="border:none;border-top:1px solid #333;margin:3px 0;">');
+                
+                const benefice = totalRevendeur - totalAcheteur;
+                totalAcheteurSemaine += totalAcheteur;
+                totalRevendeurSemaine += totalRevendeur;
+                beneficeTotal += benefice;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${cmd.nom}</td>
+                                <td>${itemsAffichees}</td>
+                                <td>
+                                    <span style="color:#a0b46a;">Acheteur: ${totalAcheteur.toLocaleString()}$</span><br>
+                                    <span style="color:#bfcf87;">Revendeur: ${totalRevendeur.toLocaleString()}$</span>
+                                </td>
+                                <td class="benefice">${benefice.toLocaleString()}$</td>
+                                <td>
+                                    <button class="action-btn edit-btn" onclick="editerCommande(${index})">Éditer</button>
+                                    <button class="action-btn delete-btn" onclick="supprimerCommande(${index})">Supprimer</button>
+                                </td>`;
+                tbody.appendChild(tr);
+            });
+            
+            // Update general totals
+            document.getElementById('total-acheteur').textContent = totalAcheteurSemaine.toLocaleString() + '$';
+            document.getElementById('total-revendeur').textContent = totalRevendeurSemaine.toLocaleString() + '$';
+            document.getElementById('benefice-total').textContent = beneficeTotal.toLocaleString() + '$';
+        }
+
+        function resetCommandes() {
+            if (confirm("Es-tu sûr de vouloir supprimer toutes les commandes de la semaine ?")) {
+                // Delete all associated Discord messages
+                if (DISCORD_WEBHOOK_URL && DISCORD_WEBHOOK_URL.startsWith("https://discord.com/api/webhooks/")) {
+                    Object.values(discordMessageIds).forEach(messageId => {
+                        const deleteUrl = `${DISCORD_WEBHOOK_URL}/messages/${messageId}`;
+                        fetch(deleteUrl, {
+                            method: "DELETE"
+                        }).catch(() => console.log("Échec de la suppression d'un message Discord"));
+                    });
+                }
+                
+                localStorage.removeItem('commandesGTA');
+                localStorage.removeItem('discordMessageIds');
+                commandes = [];
+                discordMessageIds = {};
+                afficherCommandes();
+                alert("Toutes les commandes ont été supprimées !");
+            }
+        }
+
+        window.modifierQuantite = modifierQuantite;
+        window.supprimerDuPanier = supprimerDuPanier;
+        window.validerCommande = validerCommande;
+        window.enregistrerCommande = enregistrerCommande;
+        window.annulerCommande = annulerCommande;
+        window.resetCommandes = resetCommandes;
+        window.toggleDiscordSection = toggleDiscordSection;
+        window.editerCommande = editerCommande;
+        window.supprimerCommande = supprimerCommande;
+
+        afficherArmes();
+        afficherMunitions();
+        afficherPanier();
         afficherCommandes();
-        alert("Toutes les commandes ont été supprimées !");
-      }
-    }
-
-    // Rendez les fonctions accessibles globalement
-    window.modifierQuantite = modifierQuantite;
-    window.supprimerDuPanier = supprimerDuPanier;
-    window.validerCommande = validerCommande;
-    window.enregistrerCommande = enregistrerCommande;
-    window.resetCommandes = resetCommandes;
-
-    // Initialisation
-    afficherArmes();
-    afficherMunitions();
-    afficherPanier();
-    afficherCommandes();
-  </script>
+    </script>
 </body>
 </html>
