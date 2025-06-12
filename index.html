@@ -2,134 +2,23 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Commande d'Armes GTA RP</title>
+    <title>Commande d'Armes GTA RP</title>
     <style>
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
-            background: #18191a; /* Dark background */
-            color: #e4e4c3; /* Light text color */
+            background: #18191a;
+            color: #e4e4c3;
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            display: flex; /* Make body a flex container */
-            flex-direction: column; /* Stack children vertically initially */
+            display: flex;
         }
         h1, h2, h3 {
             text-align: center;
-            color: #808000; /* Army green/olive */
+            color: #808000;
             margin-top: 30px;
             text-shadow: 0 2px 8px #3d3d00;
         }
-        /* Main layout container for sidebar and content */
-        #app-container {
-            display: flex; /* This will arrange sidebar and main-content horizontally */
-            flex-grow: 1; /* Allow it to take available space */
-            flex-wrap: wrap; /* Allow content to wrap on smaller screens */
-        }
-
-        #group-sidebar {
-            width: 250px; /* Fixed width for sidebar */
-            background: #23272b; /* Darker grey */
-            border-right: 2px solid #a0b46a; /* Green border */
-            padding: 20px 10px;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            overflow-y: auto; /* Allow scrolling for groups */
-            flex-shrink: 0; /* Prevent sidebar from shrinking */
-        }
-        .group-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-            color: #808000;
-            font-size: 1.1em;
-            font-weight: bold;
-        }
-        .group-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        .group-item {
-            background: #262a2f;
-            border: 1px solid #a0b46a;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            padding: 10px 12px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .group-item:hover {
-            background: #35391f;
-        }
-        .group-item.active {
-            background: #4a502f;
-            border-color: #bfcf87;
-            font-weight: bold;
-            box-shadow: 0 0 10px rgba(176, 255, 0, 0.4);
-        }
-        .group-item span {
-            flex-grow: 1;
-            text-align: left;
-        }
-        .group-item button {
-            background: none;
-            border: none;
-            color: #e74c3c;
-            font-size: 1.2em;
-            cursor: pointer;
-            margin-left: 10px;
-        }
-        .group-item button:hover {
-            color: #c0392b;
-        }
-        .add-group-btn {
-            background: #2ecc71;
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.2s;
-            align-self: flex-start;
-            /* width: 100%; Removed this to fit the '+' icon */
-        }
-        .add-group-btn:hover {
-            background: #27ae60;
-        }
-
-        #main-content {
-            flex-grow: 1; /* Allows main content to take remaining space */
-            padding: 0 20px;
-            max-width: calc(100% - 250px); /* Adjust max-width based on sidebar width */
-            box-sizing: border-box;
-            overflow-y: auto; /* Enable scrolling for main content if it overflows */
-        }
-        
-        /* General buttons styling */
-        button {
-            background: #a0b46a;
-            color: #23272b;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-        }
-        button:hover {
-            background: #808000;
-            color: #fff;
-        }
-
-
         #armes, #munitions {
             display: flex;
             flex-wrap: wrap;
@@ -255,11 +144,10 @@
         .total-value {
             color: #fffbe6;
         }
-        /* Moved this to the general button rule above */
-        /* button, .arme-btn, .munition-btn {
+        button, .arme-btn, .munition-btn {
             font-family: inherit;
             font-weight: bold;
-        } */ 
+        }
         input[type="text"] {
             border-radius: 7px;
             border: 1.5px solid #bfcf87;
@@ -374,6 +262,91 @@
             color: #6fcf97;
         }
 
+        /* Styles pour la barre latérale des groupes */
+        #group-sidebar {
+            width: 250px;
+            background: #23272b;
+            border-right: 2px solid #a0b46a;
+            padding: 20px 10px;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+        }
+        .group-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            color: #808000;
+            font-size: 1.1em;
+            font-weight: bold;
+        }
+        .group-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .group-item {
+            background: #262a2f;
+            border: 1px solid #a0b46a;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s, border-color 0.2s;
+        }
+        .group-item:hover {
+            background: #35391f;
+        }
+        .group-item.active {
+            background: #4a502f;
+            border-color: #bfcf87;
+            font-weight: bold;
+            box-shadow: 0 0 10px rgba(176, 255, 0, 0.4);
+        }
+        .group-item span {
+            flex-grow: 1;
+            text-align: left;
+        }
+        .group-item button {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .group-item button:hover {
+            color: #c0392b;
+        }
+        .add-group-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            align-self: flex-start;
+            width: 100%;
+        }
+        .add-group-btn:hover {
+            background: #27ae60;
+        }
+
+        #main-content {
+            flex-grow: 1;
+            padding: 0 20px;
+            max-width: calc(100% - 250px);
+            box-sizing: border-box;
+        }
+
         /* Styles pour la gestion des webhooks */
         .group-webhook-section {
             background: #23272b;
@@ -382,7 +355,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             padding: 12px 16px;
             margin-top: 20px;
-            width: calc(100% - 32px); /* Adjust width for padding */
+            width: 100%;
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -422,7 +395,7 @@
             font-size: 0.9em;
         }
         .channel-item .channel-webhook-input {
-            width: calc(100% - 20px); /* Adjust width for padding */
+            width: calc(100% - 20px); /* Ajuster la largeur de l'input webhook */
             background: #18191a;
             border: 1px solid #2ecc71;
             color: #e4e4c3;
@@ -464,120 +437,82 @@
         .add-channel-btn:hover {
             background: #2980b9;
         }
-
-        .send-recap-btn {
-            background: #6a0dad; /* Violet */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-            margin-left: auto;
-            margin-right: auto;
-            display: block;
-            transition: background 0.2s;
-        }
-
-        .send-recap-btn:hover {
-            background: #4b0082; /* Violet plus foncé au survol */
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            #app-container {
-                flex-direction: column; /* Stack sidebar and main content vertically on small screens */
-            }
-            #group-sidebar {
-                width: 100%; /* Full width for sidebar on small screens */
-                border-right: none;
-                border-bottom: 2px solid #a0b46a;
-            }
-            #main-content {
-                max-width: 100%; /* Full width for main content on small screens */
-                padding: 10px;
-            }
-            #panier, #formulaire-nom, #commandes {
-                padding: 15px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div id="app-container"> <div id="group-sidebar">
-            <div class="group-header">
-                <span>Groupes</span>
-                <button class="add-group-btn" onclick="ajouterGroupe()">+</button>
-            </div>
-            <ul id="group-list" class="group-list">
+    <div id="group-sidebar">
+        <div class="group-header">
+            <span>Groupes</span>
+            <button class="add-group-btn" onclick="ajouterGroupe()">+</button>
+        </div>
+        <ul id="group-list" class="group-list">
             </ul>
 
-            <div id="group-webhook-container" class="group-webhook-section" style="display: none;">
-                <h3>Webhooks du groupe sélectionné</h3>
-                <ul id="channel-webhook-list" class="channel-list">
+        <div id="group-webhook-container" class="group-webhook-section" style="display: none;">
+            <h3>Webhooks du groupe sélectionné</h3>
+            <ul id="channel-webhook-list" class="channel-list">
                 </ul>
-                <button class="add-channel-btn" onclick="ajouterSalon()">Ajouter un salon</button>
-            </div>
+            <button class="add-channel-btn" onclick="ajouterSalon()">Ajouter un salon</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <h1>Commande d'Armes GTA RP</h1>
+
+        <h3>Armes</h3>
+        <div id="armes"></div>
+
+        <h3>Munitions</h3>
+        <div id="munitions"></div>
+
+        <div id="panier">
+            <h2>Mon panier</h2>
+            <ul id="liste-panier"></ul>
+            <div id="total-panier" class="total-block"></div>
+            <button onclick="validerCommande()">Valider la commande</button>
         </div>
 
-        <div id="main-content">
-            <h1>Commande d'Armes GTA RP</h1>
+        <div id="formulaire-nom" style="display:none;">
+            <h2>Finaliser la commande</h2>
+            <p>Commande pour le groupe : <strong id="selected-group-name"></strong></p>
+            <button onclick="enregistrerCommande()">Envoyer la commande</button>
+            <button onclick="annulerCommande()" style="background: #b94a48; margin-left: 10px;">Annuler</button>
+        </div>
 
-            <h3>Armes</h3>
-            <div id="armes"></div>
-
-            <h3>Munitions</h3>
-            <div id="munitions"></div>
-
-            <div id="panier">
-                <h2>Mon panier</h2>
-                <ul id="liste-panier"></ul>
-                <div id="total-panier" class="total-block"></div>
-                <button onclick="validerCommande()">Valider la commande</button>
-            </div>
-
-            <div id="formulaire-nom" style="display:none;">
-                <h2>Finaliser la commande</h2>
-                <label>Nom de l'acheteur : <input type="text" id="nom-acheteur"></label>
-                <button onclick="enregistrerCommande()">Envoyer la commande</button>
-                <button onclick="annulerCommande()" style="background: #b94a48; margin-left: 10px;">Annuler</button>
-            </div>
-
-            <div id="commandes">
-                <h2>Liste des commandes</h2>
-                <button class="reset-btn" onclick="resetCommandes()">Réinitialiser les commandes de la semaine</button>
-                <button class="send-recap-btn" onclick="sendWeeklyRecap()">Envoyer le récap de la semaine</button>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Nom de l'acheteur</th>
-                            <th>Armes commandées</th>
-                            <th>Total</th>
-                            <th>Bénéfice</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="liste-commandes"></tbody>
-                </table>
-                
-                <div id="total-general" class="total-general">
-                    <div class="total-general-item">
-                        <span class="total-general-label">Total Acheteur (semaine)</span>
-                        <span id="total-acheteur" class="total-general-value">0$</span>
-                    </div>
-                    <div class="total-general-item">
-                        <span class="total-general-label">Total Revendeur (semaine)</span>
-                        <span id="total-revendeur" class="total-general-value">0$</span>
-                    </div>
-                    <div class="total-general-item">
-                        <span class="total-general-label">Bénéfice Total (semaine)</span>
-                        <span id="benefice-total" class="total-general-value benefice-total">0$</span>
-                    </div>
+        <div id="commandes">
+            <h2>Liste des commandes</h2>
+            <button class="reset-btn" onclick="resetCommandes()">Réinitialiser les commandes de la semaine</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Groupe Initiateur</th>
+                        <th>Armes commandées</th>
+                        <th>Total</th>
+                        <th>Bénéfice</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="liste-commandes"></tbody>
+            </table>
+            
+            <div id="total-general" class="total-general">
+                <div class="total-general-item">
+                    <span class="total-general-label">Total Acheteur (semaine)</span>
+                    <span id="total-acheteur" class="total-general-value">0$</span>
+                </div>
+                <div class="total-general-item">
+                    <span class="total-general-label">Total Revendeur (semaine)</span>
+                    <span id="total-revendeur" class="total-general-value">0$</span>
+                </div>
+                <div class="total-general-item">
+                    <span class="total-general-label">Bénéfice Total (semaine)</span>
+                    <span id="benefice-total" class="total-general-value benefice-total">0$</span>
                 </div>
             </div>
         </div>
-    </div> <script>
+    </div>
+
+    <script>
         let currentEditIndex = -1;
         let discordMessageIds = JSON.parse(localStorage.getItem('discordMessageIds')) || {};
 
@@ -632,7 +567,8 @@
                 `;
                 groupList.appendChild(li);
             });
-            renderGroupWebhooks(); // Make sure to re-render webhooks after group selection
+            renderGroupWebhooks();
+            updateSelectedGroupNameDisplay(); // Mettre à jour l'affichage du nom du groupe sélectionné
         }
 
         function ajouterGroupe() {
@@ -673,10 +609,7 @@
             currentGroupId = id;
             localStorage.setItem('currentGroupId', currentGroupId);
             renderGroupes();
-            // You might want to update commands displayed based on the selected group,
-            // but the current implementation doesn't seem to filter commands by group.
-            // If that's a desired feature, you'd need to add a 'groupId' to commands
-            // and filter them when rendering `renderCommandes()`.
+            updateSelectedGroupNameDisplay(); // Mettre à jour l'affichage du nom du groupe sélectionné
         }
 
         function renderGroupWebhooks() {
@@ -747,6 +680,17 @@
             }
         }
 
+        // Nouvelle fonction pour afficher le nom du groupe sélectionné
+        function updateSelectedGroupNameDisplay() {
+            const selectedGroup = groupes.find(g => g.id === currentGroupId);
+            const selectedGroupNameElement = document.getElementById('selected-group-name');
+            if (selectedGroupNameElement && selectedGroup) {
+                selectedGroupNameElement.textContent = selectedGroup.name;
+            } else if (selectedGroupNameElement) {
+                selectedGroupNameElement.textContent = "Aucun groupe sélectionné";
+            }
+        }
+
         // --- Fonctions de l'outil de commande ---
 
         function afficherArmes() {
@@ -781,15 +725,11 @@
         }
 
         function modifierQuantite(nom, delta) {
-            // Find all occurrences of the item in the cart
-            const indices = panier.map((item, idx) => item === nom ? idx : -1).filter(idx => idx !== -1);
-            
-            if (delta === -1) { // Decrease quantity
-                if (indices.length > 0) {
-                    panier.splice(indices[0], 1); // Remove one instance
-                }
-            } else if (delta === 1) { // Increase quantity
-                panier.push(nom); // Add one instance
+            const index = panier.findIndex(item => item === nom);
+            if (delta === -1) {
+                if (index !== -1) panier.splice(index, 1);
+            } else if (delta === 1) {
+                panier.push(nom);
             }
             afficherPanier();
         }
@@ -849,29 +789,47 @@
                 alert("Votre panier est vide !");
                 return;
             }
+            // Afficher le formulaire de confirmation (qui affichera le nom du groupe)
             document.getElementById('formulaire-nom').style.display = 'block';
+            updateSelectedGroupNameDisplay(); // S'assurer que le nom du groupe est à jour
         }
 
         function annulerCommande() {
             document.getElementById('formulaire-nom').style.display = 'none';
-            document.getElementById('nom-acheteur').value = '';
             currentEditIndex = -1;
         }
 
         async function enregistrerCommande() {
-            const nomAcheteur = document.getElementById('nom-acheteur').value.trim();
-            if (!nomAcheteur) {
-                alert("Veuillez entrer le nom de l'acheteur.");
+            const selectedGroup = groupes.find(g => g.id === currentGroupId);
+            if (!selectedGroup) {
+                alert("Veuillez sélectionner un groupe pour cette commande.");
                 return;
             }
-            
-            const nouvelleCommande = { id: `cmd-${Date.now()}`, nom: nomAcheteur, items: [...panier] };
+            const nomAcheteur = selectedGroup.name; // Utilise le nom du groupe sélectionné
+
+            const nouvelleCommande = { id: `cmd-${Date.now()}`, nom: nomAcheteur, items: [...panier], groupId: currentGroupId };
             
             if (currentEditIndex >= 0) {
                 const oldCommandId = commandes[currentEditIndex].id;
                 commandes[currentEditIndex] = nouvelleCommande;
-                // If editing, delete the old message ID so a new one can be sent
-                if (discordMessageIds[oldCommandId]) {
+                // Lors de la modification, supprimez l'ancien message Discord si le groupe change
+                if (commandes[currentEditIndex].groupId !== currentGroupId && discordMessageIds[oldCommandId]) {
+                     // Logique pour supprimer l'ancien message Discord
+                    const oldGroup = groupes.find(g => g.id === commandes[currentEditIndex].groupId);
+                    if (oldGroup && discordMessageIds[oldCommandId]) {
+                        for (const channel of oldGroup.channels) {
+                            const webhookUrl = channel.webhookUrl;
+                            const messageId = discordMessageIds[oldCommandId][channel.name];
+                            if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
+                                const deleteUrl = `${webhookUrl}/messages/${messageId}`;
+                                try {
+                                    await fetch(deleteUrl, { method: "DELETE" });
+                                } catch (error) {
+                                    console.warn(`Échec de la suppression de l'ancien message Discord dans ${channel.name} pour l'ancienne commande:`, error);
+                                }
+                            }
+                        }
+                    }
                     delete discordMessageIds[oldCommandId];
                 }
             } else {
@@ -879,7 +837,6 @@
             }
             
             localStorage.setItem('commandesGTA', JSON.stringify(commandes));
-            localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds)); // Save updated message IDs
 
             const compteur = {};
             let totalAcheteur = 0, totalRevendeur = 0;
@@ -893,21 +850,22 @@
                 let item = armes.find(a => a.nom === nomItem) || munitions.find(m => m.nom === nomItem);
                 const prixAchat = item ? item.prix_inter : 0;
                 const prixVente = item ? item.prix_vente : 0;
-                const totalPrixAchatItem = prixAchat * quantite;
-                const totalPrixVenteItem = prixVente * quantite;
+                
+                totalAcheteur += prixAchat * quantite;
+                totalRevendeur += prixVente * quantite;
 
-                totalAcheteur += totalPrixAchatItem;
-                totalRevendeur += totalPrixVenteItem;
-
-                itemListDiscord += `\n**Item**: ${nomItem}\n**Quantité**: ${quantite}\n**Prix Achat**: ${prixAchat.toLocaleString()}$\n**Prix Vente**: ${prixVente.toLocaleString()}$`;
+                // Format "Item: NOM x QUANTITÉ"
+                itemListDiscord += `
+**Item**: ${nomItem} x ${quantite}
+`;
             });
             
             const benefice = totalRevendeur - totalAcheteur;
 
             const discordEmbed = {
                 title: currentEditIndex >= 0 ? "Commande Modifiée" : "Nouvelle Commande",
-                description: `Initiateur: **${nomAcheteur}**\n${itemListDiscord}`,
-                color: currentEditIndex >= 0 ? 0xF39C12 : 0x4CAF50, // Orange for edit, green for new
+                description: `Initiateur: **${nomAcheteur}**\n\n${itemListDiscord}`,
+                color: 65280,
                 fields: [
                     {
                         name: "Total Achat",
@@ -931,7 +889,6 @@
                 }
             };
 
-            const selectedGroup = groupes.find(g => g.id === currentGroupId);
             let anyWebhookSent = false;
 
             if (selectedGroup && selectedGroup.channels.length > 0) {
@@ -939,260 +896,213 @@
                     const webhookUrl = channel.webhookUrl;
                     if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
                         try {
-                            const messageIdKey = `${nouvelleCommande.id}_${channel.name.replace(/\s/g, '_')}`; // Unique key per command and channel
-                            const existingMessageId = discordMessageIds[messageIdKey];
-
-                            let requestOptions = {
-                                method: existingMessageId ? "PATCH" : "POST",
+                            const response = await fetch(webhookUrl + "?wait=true", {
+                                method: "POST",
                                 headers: { "Content-Type": "application/json" },
                                 body: JSON.stringify({ embeds: [discordEmbed] })
-                            };
-
-                            let urlToFetch = webhookUrl;
-                            if (existingMessageId) {
-                                urlToFetch += `/messages/${existingMessageId}`;
-                            } else {
-                                urlToFetch += "?wait=true"; // Wait for response to get message ID for new messages
-                            }
-
-                            const response = await fetch(urlToFetch, requestOptions);
+                            });
                             const data = await response.json();
-                            
-                            if (response.ok && data.id) {
-                                discordMessageIds[messageIdKey] = data.id; // Store or update message ID
-                                localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
+                            if (data.id) {
+                                if (!discordMessageIds[nouvelleCommande.id]) {
+                                    discordMessageIds[nouCommande.id] = {};
+                                }
+                                discordMessageIds[nouvelleCommande.id][channel.name] = data.id;
                                 anyWebhookSent = true;
-                            } else {
-                                console.error(`Erreur d'envoi/modification du webhook vers ${channel.name}:`, data);
-                                alert(`Erreur lors de l'envoi/modification de la commande vers Discord (${channel.name}). Vérifiez l'URL du webhook.`);
                             }
                         } catch (error) {
-                            console.error(`Erreur réseau lors de l'envoi du webhook vers ${channel.name}:`, error);
-                            alert(`Erreur réseau lors de l'envoi de la commande vers Discord (${channel.name}).`);
+                            console.error(`Erreur lors de l'envoi au webhook (${channel.name}):`, error);
                         }
                     }
                 }
             }
+
+            localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
             
-            if (anyWebhookSent || selectedGroup.channels.length === 0 || !selectedGroup) { // Allow saving even if no webhooks are configured
-                panier = [];
-                afficherPanier();
-                document.getElementById('nom-acheteur').value = '';
-                document.getElementById('formulaire-nom').style.display = 'none';
-                currentEditIndex = -1;
-                renderCommandes();
-                alert("Commande enregistrée !");
+            panier = [];
+            afficherPanier();
+            afficherCommandes();
+            document.getElementById('formulaire-nom').style.display = 'none';
+            currentEditIndex = -1;
+
+            if (anyWebhookSent) {
+                alert(currentEditIndex >= 0 ? "Commande modifiée et envoyée sur Discord !" : "Commande enregistrée et envoyée sur Discord !");
             } else {
-                alert("La commande a été enregistrée localement, mais aucune webhook valide n'a pu être contactée pour le groupe sélectionné.");
+                alert(currentEditIndex >= 0 ? "Commande modifiée (aucun webhook configuré ou valide)." : "Commande enregistrée (aucun webhook configuré ou valide).");
+            }
+        }
+
+        function editerCommande(index) {
+            if (index >= 0 && index < commandes.length) {
+                currentEditIndex = index;
+                const commande = commandes[index];
+                panier = [...commande.items];
+                selectGroup(commande.groupId); // Sélectionne le groupe de la commande éditée
+                afficherPanier();
+                document.getElementById('formulaire-nom').style.display = 'block';
+            }
+        }
+
+        async function supprimerCommande(index) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
+                const commandToDelete = commandes[index];
+                if (discordMessageIds[commandToDelete.id]) {
+                    const groupOfCommand = groupes.find(g => g.id === commandToDelete.groupId); // Utilise le groupe enregistré avec la commande
+                    if (groupOfCommand && groupOfCommand.channels.length > 0) {
+                        for (const channel of groupOfCommand.channels) {
+                            const webhookUrl = channel.webhookUrl;
+                            const messageId = discordMessageIds[commandToDelete.id][channel.name];
+                            if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
+                                const deleteUrl = `${webhookUrl}/messages/${messageId}`;
+                                try {
+                                    await fetch(deleteUrl, {
+                                        method: "DELETE"
+                                    });
+                                } catch (error) {
+                                    console.log(`Échec de la suppression d'un message Discord dans ${channel.name}:`, error);
+                                }
+                            }
+                        }
+                    }
+                    delete discordMessageIds[commandToDelete.id];
+                }
+                
+                commandes.splice(index, 1);
+                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
+                localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
+
+                afficherCommandes();
+                alert("Commande supprimée !");
             }
         }
 
         function afficherCommandes() {
             const tbody = document.getElementById('liste-commandes');
             tbody.innerHTML = '';
+            
             let totalAcheteurSemaine = 0;
             let totalRevendeurSemaine = 0;
-
-            commandes.forEach((commande, index) => {
-                const tr = document.createElement('tr');
-                const compteurItems = {};
-                let totalAcheteurCommande = 0;
-                let totalRevendeurCommande = 0;
-
-                commande.items.forEach(itemNom => {
-                    if (compteurItems[itemNom]) compteurItems[itemNom]++;
-                    else compteurItems[itemNom] = 1;
-                });
-
-                let detailItems = '';
-                Object.entries(compteurItems).forEach(([nom, quantite]) => {
-                    let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
-                    const prixAchat = item ? item.prix_inter : 0;
-                    const prixVente = item ? item.prix_vente : 0;
-                    detailItems += `${quantite} x ${nom} (${(prixAchat * quantite).toLocaleString()}$ / ${(prixVente * quantite).toLocaleString()}$)<br>`;
-                    totalAcheteurCommande += prixAchat * quantite;
-                    totalRevendeurCommande += prixVente * quantite;
-                });
-
-                const beneficeCommande = totalRevendeurCommande - totalAcheteurCommande;
-
-                tr.innerHTML = `
-                    <td>${commande.nom}</td>
-                    <td>${detailItems}</td>
-                    <td>A: ${totalAcheteurCommande.toLocaleString()}$<br>V: ${totalRevendeurCommande.toLocaleString()}$</td>
-                    <td class="benefice">${beneficeCommande.toLocaleString()}$</td>
-                    <td>
-                        <button class="action-btn edit-btn" onclick="modifierCommande(${index})">Modifier</button>
-                        <button class="action-btn delete-btn" onclick="supprimerCommande(${index})">Supprimer</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-
-                totalAcheteurSemaine += totalAcheteurCommande;
-                totalRevendeurSemaine += totalRevendeurCommande;
-            });
-
-            document.getElementById('total-acheteur').textContent = `${totalAcheteurSemaine.toLocaleString()}$`;
-            document.getElementById('total-revendeur').textContent = `${totalRevendeurSemaine.toLocaleString()}$`;
-            document.getElementById('benefice-total').textContent = `${(totalRevendeurSemaine - totalAcheteurSemaine).toLocaleString()}$`;
-        }
-        
-        // Aliasing for clarity (as used in HTML)
-        const renderCommandes = afficherCommandes;
-
-
-        function modifierCommande(index) {
-            const commandeAModifier = commandes[index];
-            panier = [...commandeAModifier.items];
-            afficherPanier();
-            document.getElementById('nom-acheteur').value = commandeAModifier.nom;
-            currentEditIndex = index;
-            document.getElementById('formulaire-nom').style.display = 'block';
-        }
-
-        async function supprimerCommande(index) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
-                const commandToDeleteId = commandes[index].id;
-                commandes.splice(index, 1);
-                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
-
-                // Attempt to delete message on Discord
-                const selectedGroup = groupes.find(g => g.id === currentGroupId);
-                if (selectedGroup && selectedGroup.channels.length > 0) {
-                    for (const channel of selectedGroup.channels) {
-                        const webhookUrl = channel.webhookUrl;
-                        const messageIdKey = `${commandToDeleteId}_${channel.name.replace(/\s/g, '_')}`;
-                        const messageId = discordMessageIds[messageIdKey];
-
-                        if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
-                            try {
-                                const response = await fetch(`${webhookUrl}/messages/${messageId}`, {
-                                    method: "DELETE"
-                                });
-                                if (response.ok) {
-                                    console.log(`Message Discord supprimé pour la commande ${commandToDeleteId} dans ${channel.name}.`);
-                                    delete discordMessageIds[messageIdKey];
-                                    localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
-                                } else {
-                                    console.error(`Erreur de suppression du message Discord pour la commande ${commandToDeleteId} dans ${channel.name}:`, await response.json());
-                                }
-                            } catch (error) {
-                                console.error(`Erreur réseau lors de la suppression du message Discord:`, error);
-                            }
-                        }
+            let beneficeTotal = 0;
+            
+            commandes.forEach((cmd, index) => {
+                const compteur = {};
+                let totalAcheteur = 0;
+                let totalRevendeur = 0;
+                cmd.items.forEach(nom => {
+                    if (compteur[nom]) {
+                        compteur[nom]++;
+                    } else {
+                        compteur[nom] = 1;
                     }
-                }
-
-                renderCommandes();
-                alert("Commande supprimée.");
-            }
-        }
-
-        function resetCommandes() {
-            if (confirm("Êtes-vous sûr de vouloir réinitialiser TOUTES les commandes de la semaine ? Cette action est irréversible et supprimera également les messages Discord liés.")) {
-                commandes = [];
-                discordMessageIds = {}; // Clear all message IDs
-                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
-                localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds)); // Save cleared message IDs
-                renderCommandes();
-                alert("Toutes les commandes ont été réinitialisées.");
-            }
-        }
-
-        async function sendWeeklyRecap() {
-            const totalAcheteurSemaine = document.getElementById('total-acheteur').textContent;
-            const totalRevendeurSemaine = document.getElementById('total-revendeur').textContent;
-            const beneficeTotalSemaine = document.getElementById('benefice-total').textContent;
-
-            let recapDescription = "Voici le récapitulatif des commandes de la semaine :\n\n";
-
-            if (commandes.length === 0) {
-                recapDescription += "Aucune commande enregistrée pour cette semaine.";
-            } else {
-                commandes.forEach(commande => {
-                    const compteurItems = {};
-                    let totalAcheteurCommande = 0;
-                    let totalRevendeurCommande = 0;
-
-                    commande.items.forEach(itemNom => {
-                        if (compteurItems[itemNom]) compteurItems[itemNom]++;
-                        else compteurItems[itemNom] = 1;
-                    });
-
-                    let detailItems = '';
-                    Object.entries(compteurItems).forEach(([nom, quantite]) => {
+                });
+                const itemsAffichees = Object.entries(compteur)
+                    .map(([nom, quantite]) => {
                         let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
-                        const prixAchat = item ? item.prix_inter : 0;
-                        const prixVente = item ? item.prix_vente : 0;
-                        detailItems += `- ${quantite} x ${nom} (A:${(prixAchat * quantite).toLocaleString()}$, V:${(prixVente * quantite).toLocaleString()}$)\n`;
-                        totalAcheteurCommande += prixAchat * quantite;
-                        totalRevendeurCommande += prixVente * quantite;
-                    });
-                    const beneficeCommande = totalRevendeurCommande - totalAcheteurCommande;
+                        const prixAcheteur = item ? item.prix_inter : 0;
+                        const prixRevendeur = item ? item.prix_vente : 0;
+                        totalAcheteur += prixAcheteur * quantite;
+                        totalRevendeur += prixRevendeur * quantite;
+                        return quantite > 1
+                            ? `${nom} x${quantite}<br>
+                                <span style="color:#a0b46a;">Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>Revendeur: ${(prixRevendeur * quantite).toLocaleString()}$</span>`
+                            : `${nom}<br>
+                                <span style="color:#a0b46a;">Acheteur: ${prixAcheteur.toLocaleString()}$<br>Revendeur: ${prixRevendeur.toLocaleString()}$</span>`;
+                    })
+                    .join('<hr style="border:none;border-top:1px solid #333;margin:3px 0;">');
+                
+                const benefice = totalRevendeur - totalAcheteur;
+                totalAcheteurSemaine += totalAcheteur;
+                totalRevendeurSemaine += totalRevendeur;
+                beneficeTotal += benefice;
+                
+                const tr = document.createElement('tr');
+                tr.innerHTML = `<td>${cmd.nom}</td>
+                                <td>${itemsAffichees}</td>
+                                <td>
+                                    <span style="color:#a0b46a;">Acheteur: ${totalAcheteur.toLocaleString()}$</span><br>
+                                    <span style="color:#bfcf87;">Revendeur: ${totalRevendeur.toLocaleString()}$</span>
+                                </td>
+                                <td class="benefice">${benefice.toLocaleString()}$</td>
+                                <td>
+                                    <button class="action-btn edit-btn" onclick="editerCommande(${index})">Éditer</button>
+                                    <button class="action-btn delete-btn" onclick="supprimerCommande(${index})">Supprimer</button>
+                                </td>`;
+                tbody.appendChild(tr);
+            });
+            
+            document.getElementById('total-acheteur').textContent = totalAcheteurSemaine.toLocaleString() + '$';
+            document.getElementById('total-revendeur').textContent = totalRevendeurSemaine.toLocaleString() + '$';
+            document.getElementById('benefice-total').textContent = beneficeTotal.toLocaleString() + '$';
+        }
 
-                    recapDescription += `**Commande de ${commande.nom}**\n${detailItems}Total Achat: ${totalAcheteurCommande.toLocaleString()}$ | Total Vente: ${totalRevendeurCommande.toLocaleString()}$ | Bénéfice: ${beneficeCommande.toLocaleString()}$\n\n`;
-                });
-            }
+        async function resetCommandes() {
+            if (confirm("Es-tu sûr de vouloir supprimer toutes les commandes de la semaine ?")) {
+                // Important : Pour la suppression des messages Discord lors du reset,
+                // il faut parcourir TOUS les messages IDs enregistrés, car ils peuvent venir de différents groupes/canaux.
+                // Ne pas se baser uniquement sur `currentGroupId` ici.
 
-            recapDescription += `\n__**Totaux de la semaine**__\n`;
-            recapDescription += `**Total Acheteur :** ${totalAcheteurSemaine}\n`;
-            recapDescription += `**Total Revendeur :** ${totalRevendeurSemaine}\n`;
-            recapDescription += `**Bénéfice Total :** ${beneficeTotalSemaine}\n`;
+                for (const commandId in discordMessageIds) {
+                    const commandEntry = discordMessageIds[commandId];
+                    // Trouvez le groupe auquel cette commande était associée
+                    const commandFromGroup = commandes.find(cmd => cmd.id === commandId);
+                    const groupToDeleteFrom = commandFromGroup ? groupes.find(g => g.id === commandFromGroup.groupId) : null;
 
-
-            const discordEmbedRecap = {
-                title: "Récapitulatif des Commandes de la Semaine",
-                description: recapDescription,
-                color: 0x3498db, // Blue
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: "GTA RP Commands - Récapitulatif"
-                }
-            };
-
-            const selectedGroup = groupes.find(g => g.id === currentGroupId);
-            let anyWebhookSent = false;
-
-            if (selectedGroup && selectedGroup.channels.length > 0) {
-                for (const channel of selectedGroup.channels) {
-                    const webhookUrl = channel.webhookUrl;
-                    if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
-                        try {
-                            const response = await fetch(webhookUrl, {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ embeds: [discordEmbedRecap] })
-                            });
-                            if (response.ok) {
-                                anyWebhookSent = true;
-                            } else {
-                                console.error(`Erreur d'envoi du récap webhook vers ${channel.name}:`, await response.json());
-                                alert(`Erreur lors de l'envoi du récapitulatif vers Discord (${channel.name}).`);
+                    if (groupToDeleteFrom && groupToDeleteFrom.channels.length > 0) {
+                        for (const channelName in commandEntry) {
+                            const messageId = commandEntry[channelName];
+                            const channel = groupToDeleteFrom.channels.find(c => c.name === channelName);
+                            if (channel && channel.webhookUrl && channel.webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
+                                const deleteUrl = `${channel.webhookUrl}/messages/${messageId}`;
+                                try {
+                                    await fetch(deleteUrl, {
+                                        method: "DELETE"
+                                    });
+                                } catch (error) {
+                                    console.warn(`Échec de la suppression d'un message Discord lors du reset dans ${channelName}:`, error);
+                                }
                             }
-                        } catch (error) {
-                            console.error(`Erreur réseau lors de l'envoi du récap webhook vers ${channel.name}:`, error);
-                            alert(`Erreur réseau lors de l'envoi du récapitulatif vers Discord (${channel.name}).`);
                         }
                     }
                 }
-            }
-
-            if (anyWebhookSent) {
-                alert("Récapitulatif de la semaine envoyé à Discord !");
-            } else {
-                alert("Aucune webhook valide n'a été trouvée pour envoyer le récapitulatif.");
+                
+                localStorage.removeItem('commandesGTA');
+                localStorage.removeItem('discordMessageIds');
+                commandes = [];
+                discordMessageIds = {};
+                afficherCommandes();
+                alert("Toutes les commandes ont été supprimées !");
             }
         }
 
-
-        // Initialisation à l'ouverture de la page
-        document.addEventListener('DOMContentLoaded', () => {
+        // --- Initialisation ---
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGroupes();
             afficherArmes();
             afficherMunitions();
             afficherPanier();
-            renderGroupes(); // This will also call renderGroupWebhooks()
-            renderCommandes(); // This will also call afficherCommandes()
+            afficherCommandes();
+
+            if (!localStorage.getItem('currentGroupId') && groupes.length > 0) {
+                selectGroup(groupes[0].id);
+            }
+            updateSelectedGroupNameDisplay(); // Initialiser l'affichage du nom du groupe
         });
+
+        // Exposer les fonctions au scope global
+        window.modifierQuantite = modifierQuantite;
+        window.supprimerDuPanier = supprimerDuPanier;
+        window.validerCommande = validerCommande;
+        window.enregistrerCommande = enregistrerCommande;
+        window.annulerCommande = annulerCommande;
+        window.editerCommande = editerCommande;
+        window.supprimerCommande = supprimerCommande;
+        window.resetCommandes = resetCommandes;
+        window.ajouterGroupe = ajouterGroupe;
+        window.supprimerGroupe = supprimerGroupe;
+        window.selectGroup = selectGroup;
+        window.updateChannelName = updateChannelName;
+        window.updateWebhookUrl = updateWebhookUrl;
+        window.ajouterSalon = ajouterSalon;
+        window.supprimerSalon = supprimerSalon;
     </script>
 </body>
 </html>
