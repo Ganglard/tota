@@ -27,12 +27,12 @@
             margin: 20px auto 10px auto;
             max-width: 1100px;
         }
-        .arme-btn, .munition-btn {
+        .item-card { /* Nouveau style pour les cartes d'armes/munitions */
             background: #23272b;
             border: 2px solid #a0b46a;
             border-radius: 14px;
             color: #e4e4c3;
-            padding: 14px 18px 10px 18px;
+            padding: 10px 18px 10px 18px; /* Ajusté pour laisser de la place à l'input */
             min-width: 120px;
             text-align: center;
             cursor: pointer;
@@ -42,8 +42,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            position: relative; /* Pour positionner l'input */
+            padding-bottom: 40px; /* Espace pour l'input et le bouton */
         }
-        .arme-btn:hover, .munition-btn:hover {
+        .item-card:hover {
             background: #35391f;
             border-color: #bfcf87;
             color: #fffbe6;
@@ -52,7 +54,45 @@
             color: #a0b46a;
             font-size: 0.98em;
             margin-top: 4px;
+            margin-bottom: 8px; /* Espace avant l'input */
         }
+        .quantity-input-container { /* Conteneur pour l'input de quantité et le bouton d'ajout */
+            position: absolute;
+            bottom: 8px;
+            width: calc(100% - 20px); /* Ajuster la largeur */
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .quantity-input { /* Style pour les inputs de quantité sur les cartes */
+            width: 50px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #a0b46a;
+            background: #18191a;
+            color: #e4e4c3;
+            text-align: center;
+            -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+        }
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .add-to-cart-btn {
+            background: #2ecc71;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            transition: background 0.2s;
+        }
+        .add-to-cart-btn:hover {
+            background: #27ae60;
+        }
+
         #panier, #formulaire-nom, #commandes {
             background: #23272b;
             border-radius: 18px;
@@ -73,6 +113,7 @@
             padding: 8px 14px;
             border-left: 4px solid #a0b46a;
             display: flex;
+            flex-wrap: wrap; /* Permet le retour à la ligne sur petits écrans */
             align-items: center;
             justify-content: space-between;
             gap: 10px;
@@ -101,6 +142,22 @@
         .panier-btn:hover {
             background: #808000;
             color: #fff;
+        }
+        .quantity-edit-input { /* Style pour l'input de quantité dans le panier */
+            width: 40px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid #a0b46a;
+            background: #18191a;
+            color: #e4e4c3;
+            text-align: center;
+            margin: 0 5px;
+            -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+        }
+        .quantity-edit-input::-webkit-outer-spin-button,
+        .quantity-edit-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         .remove-btn {
             background: #b94a48;
@@ -144,7 +201,7 @@
         .total-value {
             color: #fffbe6;
         }
-        button, .arme-btn, .munition-btn {
+        button, .item-card { /* Modifier pour .item-card */
             font-family: inherit;
             font-weight: bold;
         }
@@ -437,6 +494,22 @@
         .add-channel-btn:hover {
             background: #2980b9;
         }
+        /* NEW CSS FOR WEEKLY RECAP BUTTON */
+        .send-recap-btn {
+            background: #7289DA; /* Discord Blue */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-bottom: 14px;
+            margin-left: 10px; /* Adjust spacing as needed */
+            transition: background 0.2s;
+        }
+        .send-recap-btn:hover {
+            background: #5b6eae;
+        }
     </style>
 </head>
 <body>
@@ -446,12 +519,12 @@
             <button class="add-group-btn" onclick="ajouterGroupe()">+</button>
         </div>
         <ul id="group-list" class="group-list">
-            </ul>
+        </ul>
 
         <div id="group-webhook-container" class="group-webhook-section" style="display: none;">
             <h3>Webhooks du groupe sélectionné</h3>
             <ul id="channel-webhook-list" class="channel-list">
-                </ul>
+            </ul>
             <button class="add-channel-btn" onclick="ajouterSalon()">Ajouter un salon</button>
         </div>
     </div>
@@ -482,6 +555,7 @@
         <div id="commandes">
             <h2>Liste des commandes</h2>
             <button class="reset-btn" onclick="resetCommandes()">Réinitialiser les commandes de la semaine</button>
+            <button class="send-recap-btn" onclick="sendWeeklyRecap()">Envoyer le récap. de la semaine sur Discord</button>
             <table>
                 <thead>
                     <tr>
@@ -547,7 +621,8 @@
             channels: [{
                 name: 'Commandes',
                 webhookUrl: ''
-            }]
+            }],
+            recapWebhookUrl: '' // NEW: Added for weekly recap webhook
         }];
         let currentGroupId = localStorage.getItem('currentGroupId') || groupes[0].id;
 
@@ -580,7 +655,8 @@
                     channels: [{
                         name: 'Commandes',
                         webhookUrl: ''
-                    }]
+                    }],
+                    recapWebhookUrl: '' // Initialize new groups with an empty recap webhook
                 };
                 groupes.push(newGroup);
                 saveGroupes();
@@ -621,6 +697,19 @@
 
             if (selectedGroup) {
                 webhookContainer.style.display = 'flex';
+                // Add input for weekly recap webhook
+                const recapWebhookItem = document.createElement('li');
+                recapWebhookItem.className = 'channel-item';
+                recapWebhookItem.style.borderLeftColor = '#7289DA'; // Discord blue for recap webhook
+                recapWebhookItem.innerHTML = `
+                    <div class="channel-item-header">
+                        <span style="color: #7289DA; font-weight: bold;">Webhook Récap. Hebdo.</span>
+                    </div>
+                    <input type="text" class="channel-webhook-input" value="${selectedGroup.recapWebhookUrl || ''}" placeholder="URL Webhook Discord pour Récap. Hebdo." onchange="updateGroupRecapWebhook('${currentGroupId}', this.value)">
+                `;
+                channelWebhookList.appendChild(recapWebhookItem);
+
+
                 selectedGroup.channels.forEach((channel, index) => {
                     const li = document.createElement('li');
                     li.className = 'channel-item';
@@ -650,6 +739,14 @@
             const group = groupes.find(g => g.id === groupId);
             if (group && group.channels[channelIndex]) {
                 group.channels[channelIndex].webhookUrl = newUrl;
+                saveGroupes();
+            }
+        }
+
+        function updateGroupRecapWebhook(groupId, newUrl) {
+            const group = groupes.find(g => g.id === groupId);
+            if (group) {
+                group.recapWebhookUrl = newUrl;
                 saveGroupes();
             }
         }
@@ -698,11 +795,17 @@
             div.innerHTML = '';
             armes.forEach(arme => {
                 const prix = arme.prix_inter.toLocaleString() + '$';
-                const btn = document.createElement('div');
-                btn.className = 'arme-btn';
-                btn.onclick = () => ajouterAuPanier(arme.nom);
-                btn.innerHTML = `<span>${arme.nom}</span><span class="prix">${prix}</span>`;
-                div.appendChild(btn);
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <span>${arme.nom}</span>
+                    <span class="prix">${prix}</span>
+                    <div class="quantity-input-container">
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="add-to-cart-btn" onclick="ajouterAuPanier('${arme.nom}', this.previousElementSibling.value)">Ajouter</button>
+                    </div>
+                `;
+                div.appendChild(card);
             });
         }
 
@@ -711,29 +814,45 @@
             div.innerHTML = '';
             munitions.forEach(mun => {
                 const prix = mun.prix_inter.toLocaleString() + '$';
-                const btn = document.createElement('div');
-                btn.className = 'munition-btn';
-                btn.onclick = () => ajouterAuPanier(mun.nom);
-                btn.innerHTML = `<span>${mun.nom}</span><span class="prix">${prix}</span>`;
-                div.appendChild(btn);
+                const card = document.createElement('div');
+                card.className = 'item-card';
+                card.innerHTML = `
+                    <span>${mun.nom}</span>
+                    <span class="prix">${prix}</span>
+                    <div class="quantity-input-container">
+                        <input type="number" class="quantity-input" value="1" min="1">
+                        <button class="add-to-cart-btn" onclick="ajouterAuPanier('${mun.nom}', this.previousElementSibling.value)">Ajouter</button>
+                    </div>
+                `;
+                div.appendChild(card);
             });
         }
 
-        function ajouterAuPanier(nom) {
-            panier.push(nom);
-            afficherPanier();
-        }
-
-        function modifierQuantite(nom, delta) {
-            const index = panier.findIndex(item => item === nom);
-            if (delta === -1) {
-                if (index !== -1) panier.splice(index, 1);
-            } else if (delta === 1) {
+        function ajouterAuPanier(nom, quantiteStr) {
+            const quantite = parseInt(quantiteStr, 10);
+            if (isNaN(quantite) || quantite <= 0) {
+                alert("Veuillez entrer une quantité valide.");
+                return;
+            }
+            for (let i = 0; i < quantite; i++) {
                 panier.push(nom);
             }
             afficherPanier();
         }
 
+        // Modifié pour prendre la nouvelle quantité directement depuis l'input
+        function modifierQuantite(nom, nouvelleQuantite) {
+            // Supprime toutes les occurrences de l'élément pour le reconstruire avec la nouvelle quantité
+            panier = panier.filter(item => item !== nom);
+            const quantite = parseInt(nouvelleQuantite, 10);
+            if (!isNaN(quantite) && quantite > 0) {
+                for (let i = 0; i < quantite; i++) {
+                    panier.push(nom);
+                }
+            }
+            afficherPanier();
+        }
+        
         function supprimerDuPanier(nom) {
             panier = panier.filter(item => item !== nom);
             afficherPanier();
@@ -761,9 +880,9 @@
                 li.innerHTML = `
                     <span>${nom}</span>
                     <div class="panier-controls">
-                        <button class="panier-btn" onclick="modifierQuantite('${nom}',-1)" title="Retirer un">−</button>
-                        <span style="min-width:22px;text-align:center;">${quantite}</span>
-                        <button class="panier-btn" onclick="modifierQuantite('${nom}',1)" title="Ajouter un">+</button>
+                        <input type="number" class="quantity-edit-input" value="${quantite}" min="0" 
+                               onchange="modifierQuantite('${nom}', this.value)" 
+                               onkeyup="if(event.key==='Enter') modifierQuantite('${nom}', this.value)">
                         <button class="remove-btn" onclick="supprimerDuPanier('${nom}')" title="Supprimer"><span>&times;</span></button>
                         <span style="margin-left:10px; color:#a0b46a;">
                             Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>
@@ -811,12 +930,15 @@
             
             if (currentEditIndex >= 0) {
                 const oldCommandId = commandes[currentEditIndex].id;
+                // Get the old group for potential old message deletion
+                const oldCommandGroupId = commandes[currentEditIndex].groupId;
+                const oldGroup = groupes.find(g => g.id === oldCommandGroupId);
+                
                 commandes[currentEditIndex] = nouvelleCommande;
-                // Lors de la modification, supprimez l'ancien message Discord si le groupe change
-                if (commandes[currentEditIndex].groupId !== currentGroupId && discordMessageIds[oldCommandId]) {
-                     // Logique pour supprimer l'ancien message Discord
-                    const oldGroup = groupes.find(g => g.id === commandes[currentEditIndex].groupId);
-                    if (oldGroup && discordMessageIds[oldCommandId]) {
+                
+                // If group changed or a message ID exists for the old command, try to delete the old Discord message
+                if ((oldCommandGroupId !== currentGroupId || discordMessageIds[oldCommandId]) && oldGroup) {
+                    if (discordMessageIds[oldCommandId]) {
                         for (const channel of oldGroup.channels) {
                             const webhookUrl = channel.webhookUrl;
                             const messageId = discordMessageIds[oldCommandId][channel.name];
@@ -825,284 +947,314 @@
                                 try {
                                     await fetch(deleteUrl, { method: "DELETE" });
                                 } catch (error) {
-                                    console.warn(`Échec de la suppression de l'ancien message Discord dans ${channel.name} pour l'ancienne commande:`, error);
+                                    console.warn(`Échec de la suppression de l'ancien message Discord:`, error);
                                 }
                             }
                         }
+                        delete discordMessageIds[oldCommandId]; // Clean up the stored message ID
                     }
-                    delete discordMessageIds[oldCommandId];
                 }
             } else {
                 commandes.push(nouvelleCommande);
             }
-            
+
             localStorage.setItem('commandesGTA', JSON.stringify(commandes));
-
-            const compteur = {};
-            let totalAcheteur = 0, totalRevendeur = 0;
-            nouvelleCommande.items.forEach(nomItem => {
-                if (compteur[nomItem]) compteur[nomItem]++;
-                else compteur[nomItem] = 1;
-            });
-
-            let itemListDiscord = "";
-            Object.entries(compteur).forEach(([nomItem, quantite]) => {
-                let item = armes.find(a => a.nom === nomItem) || munitions.find(m => m.nom === nomItem);
-                const prixAchat = item ? item.prix_inter : 0;
-                const prixVente = item ? item.prix_vente : 0;
-                
-                totalAcheteur += prixAchat * quantite;
-                totalRevendeur += prixVente * quantite;
-
-                // Format "Item: NOM x QUANTITÉ"
-                itemListDiscord += `
-**Item**: ${nomItem} x ${quantite}
-`;
-            });
             
-            const benefice = totalRevendeur - totalAcheteur;
+            // Send to Discord
+            await sendOrderToDiscord(nouvelleCommande);
 
-            const discordEmbed = {
-                title: currentEditIndex >= 0 ? "Commande Modifiée" : "Nouvelle Commande",
-                description: `Initiateur: **${nomAcheteur}**\n\n${itemListDiscord}`,
-                color: 65280,
-                fields: [
-                    {
-                        name: "Total Achat",
-                        value: `${totalAcheteur.toLocaleString()}$`,
-                        inline: true
-                    },
-                    {
-                        name: "Total Vente",
-                        value: `${totalRevendeur.toLocaleString()}$`,
-                        inline: true
-                    },
-                    {
-                        name: "Bénéfice",
-                        value: `${benefice.toLocaleString()}$`,
-                        inline: true
-                    }
-                ],
-                timestamp: new Date().toISOString(),
-                footer: {
-                    text: "GTA RP Commands"
-                }
-            };
-
-            let anyWebhookSent = false;
-
-            if (selectedGroup && selectedGroup.channels.length > 0) {
-                for (const channel of selectedGroup.channels) {
-                    const webhookUrl = channel.webhookUrl;
-                    if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
-                        try {
-                            const response = await fetch(webhookUrl + "?wait=true", {
-                                method: "POST",
-                                headers: { "Content-Type": "application/json" },
-                                body: JSON.stringify({ embeds: [discordEmbed] })
-                            });
-                            const data = await response.json();
-                            if (data.id) {
-                                if (!discordMessageIds[nouvelleCommande.id]) {
-                                    discordMessageIds[nouCommande.id] = {};
-                                }
-                                discordMessageIds[nouvelleCommande.id][channel.name] = data.id;
-                                anyWebhookSent = true;
-                            }
-                        } catch (error) {
-                            console.error(`Erreur lors de l'envoi au webhook (${channel.name}):`, error);
-                        }
-                    }
-                }
-            }
-
-            localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
-            
             panier = [];
             afficherPanier();
             afficherCommandes();
-            document.getElementById('formulaire-nom').style.display = 'none';
-            currentEditIndex = -1;
-
-            if (anyWebhookSent) {
-                alert(currentEditIndex >= 0 ? "Commande modifiée et envoyée sur Discord !" : "Commande enregistrée et envoyée sur Discord !");
-            } else {
-                alert(currentEditIndex >= 0 ? "Commande modifiée (aucun webhook configuré ou valide)." : "Commande enregistrée (aucun webhook configuré ou valide).");
-            }
+            annulerCommande();
+            updateGeneralTotals();
+            localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
         }
 
-        function editerCommande(index) {
-            if (index >= 0 && index < commandes.length) {
-                currentEditIndex = index;
-                const commande = commandes[index];
-                panier = [...commande.items];
-                selectGroup(commande.groupId); // Sélectionne le groupe de la commande éditée
-                afficherPanier();
-                document.getElementById('formulaire-nom').style.display = 'block';
-            }
-        }
-
-        async function supprimerCommande(index) {
-            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
-                const commandToDelete = commandes[index];
-                if (discordMessageIds[commandToDelete.id]) {
-                    const groupOfCommand = groupes.find(g => g.id === commandToDelete.groupId); // Utilise le groupe enregistré avec la commande
-                    if (groupOfCommand && groupOfCommand.channels.length > 0) {
-                        for (const channel of groupOfCommand.channels) {
-                            const webhookUrl = channel.webhookUrl;
-                            const messageId = discordMessageIds[commandToDelete.id][channel.name];
-                            if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
-                                const deleteUrl = `${webhookUrl}/messages/${messageId}`;
-                                try {
-                                    await fetch(deleteUrl, {
-                                        method: "DELETE"
-                                    });
-                                } catch (error) {
-                                    console.log(`Échec de la suppression d'un message Discord dans ${channel.name}:`, error);
-                                }
-                            }
-                        }
-                    }
-                    delete discordMessageIds[commandToDelete.id];
+        function calculerTotauxCommande(items) {
+            let totalAcheteur = 0;
+            let totalRevendeur = 0;
+            const compteur = {};
+            items.forEach(nom => {
+                if (compteur[nom]) {
+                    compteur[nom]++;
+                } else {
+                    compteur[nom] = 1;
                 }
-                
-                commandes.splice(index, 1);
-                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
-                localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
-
-                afficherCommandes();
-                alert("Commande supprimée !");
-            }
+            });
+            Object.entries(compteur).forEach(([nom, quantite]) => {
+                let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
+                if (item) {
+                    totalAcheteur += item.prix_inter * quantite;
+                    totalRevendeur += item.prix_vente * quantite;
+                }
+            });
+            return { totalAcheteur, totalRevendeur, benefice: totalRevendeur - totalAcheteur };
         }
 
         function afficherCommandes() {
             const tbody = document.getElementById('liste-commandes');
             tbody.innerHTML = '';
-            
-            let totalAcheteurSemaine = 0;
-            let totalRevendeurSemaine = 0;
-            let beneficeTotal = 0;
-            
-            commandes.forEach((cmd, index) => {
-                const compteur = {};
-                let totalAcheteur = 0;
-                let totalRevendeur = 0;
-                cmd.items.forEach(nom => {
-                    if (compteur[nom]) {
-                        compteur[nom]++;
-                    } else {
-                        compteur[nom] = 1;
-                    }
-                });
-                const itemsAffichees = Object.entries(compteur)
-                    .map(([nom, quantite]) => {
-                        let item = armes.find(a => a.nom === nom) || munitions.find(m => m.nom === nom);
-                        const prixAcheteur = item ? item.prix_inter : 0;
-                        const prixRevendeur = item ? item.prix_vente : 0;
-                        totalAcheteur += prixAcheteur * quantite;
-                        totalRevendeur += prixRevendeur * quantite;
-                        return quantite > 1
-                            ? `${nom} x${quantite}<br>
-                                <span style="color:#a0b46a;">Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>Revendeur: ${(prixRevendeur * quantite).toLocaleString()}$</span>`
-                            : `${nom}<br>
-                                <span style="color:#a0b46a;">Acheteur: ${prixAcheteur.toLocaleString()}$<br>Revendeur: ${prixRevendeur.toLocaleString()}$</span>`;
-                    })
-                    .join('<hr style="border:none;border-top:1px solid #333;margin:3px 0;">');
-                
-                const benefice = totalRevendeur - totalAcheteur;
-                totalAcheteurSemaine += totalAcheteur;
-                totalRevendeurSemaine += totalRevendeur;
-                beneficeTotal += benefice;
-                
-                const tr = document.createElement('tr');
-                tr.innerHTML = `<td>${cmd.nom}</td>
-                                <td>${itemsAffichees}</td>
-                                <td>
-                                    <span style="color:#a0b46a;">Acheteur: ${totalAcheteur.toLocaleString()}$</span><br>
-                                    <span style="color:#bfcf87;">Revendeur: ${totalRevendeur.toLocaleString()}$</span>
-                                </td>
-                                <td class="benefice">${benefice.toLocaleString()}$</td>
-                                <td>
-                                    <button class="action-btn edit-btn" onclick="editerCommande(${index})">Éditer</button>
-                                    <button class="action-btn delete-btn" onclick="supprimerCommande(${index})">Supprimer</button>
-                                </td>`;
-                tbody.appendChild(tr);
+            commandes.forEach((commande, index) => {
+                const { totalAcheteur, totalRevendeur, benefice } = calculerTotauxCommande(commande.items);
+                const li = document.createElement('tr');
+                li.innerHTML = `
+                    <td>${commande.nom}</td>
+                    <td>${formatItems(commande.items)}</td>
+                    <td>${totalRevendeur.toLocaleString()}$</td>
+                    <td class="benefice">${benefice.toLocaleString()}$</td>
+                    <td>
+                        <button class="action-btn edit-btn" onclick="editerCommande(${index})">Modifier</button>
+                        <button class="action-btn delete-btn" onclick="supprimerCommande(${index})">Supprimer</button>
+                    </td>
+                `;
+                tbody.appendChild(li);
             });
-            
-            document.getElementById('total-acheteur').textContent = totalAcheteurSemaine.toLocaleString() + '$';
-            document.getElementById('total-revendeur').textContent = totalRevendeurSemaine.toLocaleString() + '$';
-            document.getElementById('benefice-total').textContent = beneficeTotal.toLocaleString() + '$';
+            updateGeneralTotals();
         }
 
-        async function resetCommandes() {
-            if (confirm("Es-tu sûr de vouloir supprimer toutes les commandes de la semaine ?")) {
-                // Important : Pour la suppression des messages Discord lors du reset,
-                // il faut parcourir TOUS les messages IDs enregistrés, car ils peuvent venir de différents groupes/canaux.
-                // Ne pas se baser uniquement sur `currentGroupId` ici.
+        function formatItems(items) {
+            const counts = {};
+            items.forEach(item => {
+                counts[item] = (counts[item] || 0) + 1;
+            });
+            return Object.entries(counts).map(([name, count]) => `${count}x ${name}`).join('<br>');
+        }
 
-                for (const commandId in discordMessageIds) {
-                    const commandEntry = discordMessageIds[commandId];
-                    // Trouvez le groupe auquel cette commande était associée
-                    const commandFromGroup = commandes.find(cmd => cmd.id === commandId);
-                    const groupToDeleteFrom = commandFromGroup ? groupes.find(g => g.id === commandFromGroup.groupId) : null;
+        function editerCommande(index) {
+            currentEditIndex = index;
+            panier = [...commandes[index].items];
+            afficherPanier();
+            validerCommande(); // Show the confirmation form
+        }
 
-                    if (groupToDeleteFrom && groupToDeleteFrom.channels.length > 0) {
-                        for (const channelName in commandEntry) {
-                            const messageId = commandEntry[channelName];
-                            const channel = groupToDeleteFrom.channels.find(c => c.name === channelName);
-                            if (channel && channel.webhookUrl && channel.webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
-                                const deleteUrl = `${channel.webhookUrl}/messages/${messageId}`;
-                                try {
-                                    await fetch(deleteUrl, {
-                                        method: "DELETE"
-                                    });
-                                } catch (error) {
-                                    console.warn(`Échec de la suppression d'un message Discord lors du reset dans ${channelName}:`, error);
-                                }
+        async function supprimerCommande(index) {
+            if (confirm("Êtes-vous sûr de vouloir supprimer cette commande ?")) {
+                const commandToDelete = commandes[index];
+                const commandId = commandToDelete.id;
+                const commandGroupId = commandToDelete.groupId;
+                const group = groupes.find(g => g.id === commandGroupId);
+
+                if (group && discordMessageIds[commandId]) {
+                    for (const channel of group.channels) {
+                        const webhookUrl = channel.webhookUrl;
+                        const messageId = discordMessageIds[commandId][channel.name];
+                        if (webhookUrl && webhookUrl.startsWith("https://discord.com/api/webhooks/") && messageId) {
+                            const deleteUrl = `${webhookUrl}/messages/${messageId}`;
+                            try {
+                                await fetch(deleteUrl, { method: "DELETE" });
+                                console.log(`Message Discord supprimé pour la commande ${commandId} dans le salon ${channel.name}.`);
+                            } catch (error) {
+                                console.error(`Erreur lors de la suppression du message Discord pour la commande ${commandId} dans le salon ${channel.name}:`, error);
                             }
                         }
                     }
+                    delete discordMessageIds[commandId]; // Remove message IDs after successful deletion attempts
+                    localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
                 }
-                
-                localStorage.removeItem('commandesGTA');
-                localStorage.removeItem('discordMessageIds');
-                commandes = [];
-                discordMessageIds = {};
+
+                commandes.splice(index, 1);
+                localStorage.setItem('commandesGTA', JSON.stringify(commandes));
                 afficherCommandes();
-                alert("Toutes les commandes ont été supprimées !");
+                updateGeneralTotals();
             }
         }
 
-        // --- Initialisation ---
-        document.addEventListener('DOMContentLoaded', function() {
-            renderGroupes();
+        function resetCommandes() {
+            if (confirm("Ceci va réinitialiser TOUTES les commandes enregistrées pour cette semaine. Êtes-vous sûr ?")) {
+                commandes = [];
+                discordMessageIds = {}; // Also clear message IDs
+                localStorage.removeItem('commandesGTA');
+                localStorage.removeItem('discordMessageIds');
+                afficherCommandes();
+                updateGeneralTotals();
+                alert("Les commandes de la semaine ont été réinitialisées !");
+            }
+        }
+
+        function updateGeneralTotals() {
+            let totalAcheteurGeneral = 0;
+            let totalRevendeurGeneral = 0;
+            commandes.forEach(commande => {
+                const { totalAcheteur, totalRevendeur } = calculerTotauxCommande(commande.items);
+                totalAcheteurGeneral += totalAcheteur;
+                totalRevendeurGeneral += totalRevendeur;
+            });
+            document.getElementById('total-acheteur').textContent = totalAcheteurGeneral.toLocaleString() + '$';
+            document.getElementById('total-revendeur').textContent = totalRevendeurGeneral.toLocaleString() + '$';
+            document.getElementById('benefice-total').textContent = (totalRevendeurGeneral - totalAcheteurGeneral).toLocaleString() + '$';
+        }
+
+        // --- Discord Webhook Functions ---
+
+        async function sendOrderToDiscord(commande) {
+            const selectedGroup = groupes.find(g => g.id === commande.groupId);
+            if (!selectedGroup || selectedGroup.channels.length === 0) {
+                console.warn("Aucun groupe sélectionné ou aucun salon configuré pour l'envoi Discord.");
+                return;
+            }
+
+            const { totalAcheteur, totalRevendeur, benefice } = calculerTotauxCommande(commande.items);
+            const itemsFormatted = Object.entries(commande.items.reduce((acc, item) => {
+                acc[item] = (acc[item] || 0) + 1;
+                return acc;
+            }, {})).map(([name, count]) => `${count}x ${name}`).join('\n');
+
+            const embed = {
+                title: `Nouvelle Commande d'Armes - Groupe: ${commande.nom}`,
+                description: `**ID Commande:** \`${commande.id}\`\n\n**Articles commandés:**\n${itemsFormatted}`,
+                fields: [
+                    { name: "Total Acheteur", value: `${totalAcheteur.toLocaleString()}$`, inline: true },
+                    { name: "Total Revendeur", value: `${totalRevendeur.toLocaleString()}$`, inline: true },
+                    { name: "Bénéfice Estimé", value: `${benefice.toLocaleString()}$`, inline: true }
+                ],
+                color: 8421504, // A nice green/yellow color
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: "Système de Commande GTA RP"
+                }
+            };
+
+            const newDiscordMessageIds = {}; // To store message IDs for this command
+
+            for (const channel of selectedGroup.channels) {
+                const webhookUrl = channel.webhookUrl;
+                if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+                    console.warn(`Webhook URL non valide pour le salon '${channel.name}' du groupe '${selectedGroup.name}'.`);
+                    continue;
+                }
+
+                try {
+                    // If editing, try to update the existing message
+                    if (currentEditIndex !== -1 && discordMessageIds[commande.id] && discordMessageIds[commande.id][channel.name]) {
+                        const messageId = discordMessageIds[commande.id][channel.name];
+                        const response = await fetch(`${webhookUrl}/messages/${messageId}`, {
+                            method: "PATCH", // Use PATCH for editing
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ embeds: [embed] })
+                        });
+                        if (!response.ok) {
+                            console.error(`Erreur lors de la mise à jour du message Discord (code: ${response.status}):`, await response.text());
+                            // If update fails, try sending a new message
+                            const newResponse = await fetch(webhookUrl, {
+                                method: "POST",
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ embeds: [embed] })
+                            });
+                            if (newResponse.ok) {
+                                const data = await newResponse.json();
+                                newDiscordMessageIds[channel.name] = data.id;
+                                console.log(`Nouveau message Discord envoyé après échec de mise à jour dans le salon ${channel.name}.`);
+                            } else {
+                                console.error(`Erreur lors de l'envoi d'un nouveau message Discord (code: ${newResponse.status}):`, await newResponse.text());
+                            }
+                        } else {
+                            console.log(`Message Discord mis à jour dans le salon ${channel.name}.`);
+                            newDiscordMessageIds[channel.name] = messageId; // Keep the same message ID
+                        }
+                    } else {
+                        // Send a new message
+                        const response = await fetch(webhookUrl, {
+                            method: "POST",
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ embeds: [embed] })
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            newDiscordMessageIds[channel.name] = data.id;
+                            console.log(`Commande envoyée à Discord dans le salon ${channel.name}. Message ID: ${data.id}`);
+                        } else {
+                            console.error(`Erreur lors de l'envoi à Discord (code: ${response.status}) dans le salon ${channel.name}:`, await response.text());
+                            alert(`Erreur lors de l'envoi à Discord pour le salon "${channel.name}" ! Vérifiez l'URL du webhook.`);
+                        }
+                    }
+                } catch (error) {
+                    console.error(`Erreur réseau lors de l'envoi à Discord pour le salon ${channel.name}:`, error);
+                    alert(`Erreur réseau lors de l'envoi à Discord pour le salon "${channel.name}" !`);
+                }
+            }
+            discordMessageIds[commande.id] = newDiscordMessageIds;
+            localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
+        }
+
+        async function sendWeeklyRecap() {
+            const selectedGroup = groupes.find(g => g.id === currentGroupId);
+            if (!selectedGroup || !selectedGroup.recapWebhookUrl) {
+                alert("Veuillez configurer l'URL du webhook de récapitulatif hebdomadaire pour le groupe sélectionné.");
+                return;
+            }
+
+            if (commandes.length === 0) {
+                alert("Aucune commande à récapituler pour cette semaine.");
+                return;
+            }
+
+            let totalAcheteurRecap = 0;
+            let totalRevendeurRecap = 0;
+            const itemsRecap = {}; // { item: count }
+
+            commandes.forEach(cmd => {
+                const { totalAcheteur, totalRevendeur } = calculerTotauxCommande(cmd.items);
+                totalAcheteurRecap += totalAcheteur;
+                totalRevendeurRecap += totalRevendeur;
+
+                cmd.items.forEach(item => {
+                    itemsRecap[item] = (itemsRecap[item] || 0) + 1;
+                });
+            });
+
+            const beneficeRecap = totalRevendeurRecap - totalAcheteurRecap;
+
+            const recapDetails = Object.entries(itemsRecap)
+                .map(([item, count]) => `${count}x ${item}`)
+                .join('\n');
+
+            const embed = {
+                title: `📊 Récapitulatif Hebdomadaire des Commandes - Groupe: ${selectedGroup.name} 📊`,
+                description: `Voici le résumé des commandes enregistrées pour la semaine.`,
+                fields: [
+                    { name: "Articles Totaux Commandés", value: recapDetails || "Aucun article", inline: false },
+                    { name: "Total Acheteur", value: `${totalAcheteurRecap.toLocaleString()}$`, inline: true },
+                    { name: "Total Revendeur", value: `${totalRevendeurRecap.toLocaleString()}$`, inline: true },
+                    { name: "Bénéfice Total", value: `${beneficeRecap.toLocaleString()}$`, inline: true }
+                ],
+                color: 7484644, // A light blue/purple for recap
+                timestamp: new Date().toISOString(),
+                footer: {
+                    text: "Récapitulatif généré par le Système de Commande GTA RP"
+                }
+            };
+
+            try {
+                const response = await fetch(selectedGroup.recapWebhookUrl, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ embeds: [embed] })
+                });
+
+                if (response.ok) {
+                    alert("Récapitulatif hebdomadaire envoyé à Discord avec succès !");
+                } else {
+                    console.error(`Erreur lors de l'envoi du récapitulatif à Discord (code: ${response.status}):`, await response.text());
+                    alert(`Erreur lors de l'envoi du récapitulatif à Discord ! Vérifiez l'URL du webhook de récapitulatif.`);
+                }
+            } catch (error) {
+                console.error("Erreur réseau lors de l'envoi du récapitulatif à Discord:", error);
+                alert("Erreur réseau lors de l'envoi du récapitulatif à Discord !");
+            }
+        }
+
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', () => {
             afficherArmes();
             afficherMunitions();
-            afficherPanier();
+            afficherPanier(); // Initialize an empty cart display
+            renderGroupes(); // Render groups and their webhooks
             afficherCommandes();
-
-            if (!localStorage.getItem('currentGroupId') && groupes.length > 0) {
-                selectGroup(groupes[0].id);
-            }
-            updateSelectedGroupNameDisplay(); // Initialiser l'affichage du nom du groupe
+            updateGeneralTotals();
         });
-
-        // Exposer les fonctions au scope global
-        window.modifierQuantite = modifierQuantite;
-        window.supprimerDuPanier = supprimerDuPanier;
-        window.validerCommande = validerCommande;
-        window.enregistrerCommande = enregistrerCommande;
-        window.annulerCommande = annulerCommande;
-        window.editerCommande = editerCommande;
-        window.supprimerCommande = supprimerCommande;
-        window.resetCommandes = resetCommandes;
-        window.ajouterGroupe = ajouterGroupe;
-        window.supprimerGroupe = supprimerGroupe;
-        window.selectGroup = selectGroup;
-        window.updateChannelName = updateChannelName;
-        window.updateWebhookUrl = updateWebhookUrl;
-        window.ajouterSalon = ajouterSalon;
-        window.supprimerSalon = supprimerSalon;
     </script>
 </body>
 </html>
