@@ -35,7 +35,7 @@
             padding: 10px 18px 10px 18px; /* Ajusté pour laisser de la place à l'input */
             min-width: 120px;
             text-align: center;
-            cursor: pointer;
+            /* cursor: pointer; */ /* Le curseur n'est plus sur la carte entière, mais sur le bouton */
             font-size: 1em;
             transition: background 0.2s, border 0.2s, color 0.2s;
             box-shadow: 0 2px 8px #1a1d20;
@@ -351,7 +351,7 @@
             border-radius: 8px;
             margin-bottom: 8px;
             padding: 10px 12px;
-            cursor: pointer;
+            cursor: pointer; /* Ajout du curseur pointer sur tout l'élément li */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -369,6 +369,7 @@
         .group-item span {
             flex-grow: 1;
             text-align: left;
+            pointer-events: none; /* Empêche le span de "capter" le clic, qui est maintenant sur le li */
         }
         .group-item button {
             background: none;
@@ -510,6 +511,36 @@
         .send-recap-btn:hover {
             background: #5b6eae;
         }
+
+        /* NEW CSS for global weekly recap webhook */
+        #global-recap-webhook-section {
+            background: #23272b;
+            border: 2px solid #7289DA; /* Discord Blue */
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 12px 16px;
+            margin-top: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        #global-recap-webhook-section h3 {
+            color: #7289DA;
+            font-size: 1.1em;
+            margin: 0 0 5px 0;
+            text-align: left;
+        }
+        #global-recap-webhook-section input {
+            background: #18191a;
+            border: 1px solid #7289DA;
+            color: #e4e4c3;
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9em;
+            width: calc(100% - 20px);
+        }
     </style>
 </head>
 <body>
@@ -526,6 +557,11 @@
             <ul id="channel-webhook-list" class="channel-list">
             </ul>
             <button class="add-channel-btn" onclick="ajouterSalon()">Ajouter un salon</button>
+        </div>
+
+        <div id="global-recap-webhook-section">
+            <h3>Webhook Récap. Hebdo. Global</h3>
+            <input type="text" id="global-recap-webhook-url-input" placeholder="URL Webhook Discord pour Récapitulatif Hebdo." onchange="updateGlobalRecapWebhook(this.value)">
         </div>
     </div>
 
@@ -621,13 +657,19 @@
             channels: [{
                 name: 'Commandes',
                 webhookUrl: ''
-            }],
-            recapWebhookUrl: '' // NEW: Added for weekly recap webhook
+            }]
         }];
         let currentGroupId = localStorage.getItem('currentGroupId') || groupes[0].id;
 
+        // Nouvelle variable pour le webhook de récapitulatif hebdomadaire global
+        let globalWeeklyRecapWebhookUrl = localStorage.getItem('globalWeeklyRecapWebhookUrl') || '';
+
         function saveGroupes() {
             localStorage.setItem('discordGroups', JSON.stringify(groupes));
+        }
+
+        function saveGlobalWeeklyRecapWebhook() {
+            localStorage.setItem('globalWeeklyRecapWebhookUrl', globalWeeklyRecapWebhookUrl);
         }
 
         function renderGroupes() {
@@ -636,14 +678,18 @@
             groupes.forEach(group => {
                 const li = document.createElement('li');
                 li.className = `group-item ${group.id === currentGroupId ? 'active' : ''}`;
+                // Déplace l'événement onclick sur le li
+                li.onclick = () => selectGroup(group.id);
                 li.innerHTML = `
-                    <span onclick="selectGroup('${group.id}')">${group.name}</span>
-                    ${group.id !== 'default' ? `<button onclick="supprimerGroupe('${group.id}')" title="Supprimer le groupe">&times;</button>` : ''}
+                    <span>${group.name}</span>
+                    ${group.id !== 'default' ? `<button onclick="event.stopPropagation(); supprimerGroupe('${group.id}')" title="Supprimer le groupe">&times;</button>` : ''}
                 `;
                 groupList.appendChild(li);
             });
             renderGroupWebhooks();
             updateSelectedGroupNameDisplay(); // Mettre à jour l'affichage du nom du groupe sélectionné
+            // Mettre à jour la valeur de l'input du webhook global
+            document.getElementById('global-recap-webhook-url-input').value = globalWeeklyRecapWebhookUrl;
         }
 
         function ajouterGroupe() {
@@ -655,8 +701,7 @@
                     channels: [{
                         name: 'Commandes',
                         webhookUrl: ''
-                    }],
-                    recapWebhookUrl: '' // Initialize new groups with an empty recap webhook
+                    }]
                 };
                 groupes.push(newGroup);
                 saveGroupes();
@@ -697,19 +742,8 @@
 
             if (selectedGroup) {
                 webhookContainer.style.display = 'flex';
-                // Add input for weekly recap webhook
-                const recapWebhookItem = document.createElement('li');
-                recapWebhookItem.className = 'channel-item';
-                recapWebhookItem.style.borderLeftColor = '#7289DA'; // Discord blue for recap webhook
-                recapWebhookItem.innerHTML = `
-                    <div class="channel-item-header">
-                        <span style="color: #7289DA; font-weight: bold;">Webhook Récap. Hebdo.</span>
-                    </div>
-                    <input type="text" class="channel-webhook-input" value="${selectedGroup.recapWebhookUrl || ''}" placeholder="URL Webhook Discord pour Récap. Hebdo." onchange="updateGroupRecapWebhook('${currentGroupId}', this.value)">
-                `;
-                channelWebhookList.appendChild(recapWebhookItem);
-
-
+                // L'input pour le webhook de récapitulatif hebdomadaire spécifique au groupe est supprimé d'ici
+                
                 selectedGroup.channels.forEach((channel, index) => {
                     const li = document.createElement('li');
                     li.className = 'channel-item';
@@ -743,12 +777,10 @@
             }
         }
 
-        function updateGroupRecapWebhook(groupId, newUrl) {
-            const group = groupes.find(g => g.id === groupId);
-            if (group) {
-                group.recapWebhookUrl = newUrl;
-                saveGroupes();
-            }
+        // Nouvelle fonction pour mettre à jour le webhook de récapitulatif hebdomadaire global
+        function updateGlobalRecapWebhook(newUrl) {
+            globalWeeklyRecapWebhookUrl = newUrl;
+            saveGlobalWeeklyRecapWebhook();
         }
 
         function ajouterSalon() {
@@ -1179,9 +1211,8 @@
         }
 
         async function sendWeeklyRecap() {
-            const selectedGroup = groupes.find(g => g.id === currentGroupId);
-            if (!selectedGroup || !selectedGroup.recapWebhookUrl) {
-                alert("Veuillez configurer l'URL du webhook de récapitulatif hebdomadaire pour le groupe sélectionné.");
+            if (!globalWeeklyRecapWebhookUrl || !globalWeeklyRecapWebhookUrl.startsWith("https://discord.com/api/webhooks/")) {
+                alert("Veuillez configurer l'URL du webhook de récapitulatif hebdomadaire global.");
                 return;
             }
 
@@ -1211,8 +1242,8 @@
                 .join('\n');
 
             const embed = {
-                title: `📊 Récapitulatif Hebdomadaire des Commandes - Groupe: ${selectedGroup.name} 📊`,
-                description: `Voici le résumé des commandes enregistrées pour la semaine.`,
+                title: `📊 Récapitulatif Hebdomadaire des Commandes Global 📊`,
+                description: `Voici le résumé **GLOBAL** des commandes enregistrées pour la semaine.`,
                 fields: [
                     { name: "Articles Totaux Commandés", value: recapDetails || "Aucun article", inline: false },
                     { name: "Total Acheteur", value: `${totalAcheteurRecap.toLocaleString()}$`, inline: true },
@@ -1227,17 +1258,17 @@
             };
 
             try {
-                const response = await fetch(selectedGroup.recapWebhookUrl, {
+                const response = await fetch(globalWeeklyRecapWebhookUrl, {
                     method: "POST",
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ embeds: [embed] })
                 });
 
                 if (response.ok) {
-                    alert("Récapitulatif hebdomadaire envoyé à Discord avec succès !");
+                    alert("Récapitulatif hebdomadaire global envoyé à Discord avec succès !");
                 } else {
                     console.error(`Erreur lors de l'envoi du récapitulatif à Discord (code: ${response.status}):`, await response.text());
-                    alert(`Erreur lors de l'envoi du récapitulatif à Discord ! Vérifiez l'URL du webhook de récapitulatif.`);
+                    alert(`Erreur lors de l'envoi du récapitulatif à Discord ! Vérifiez l'URL du webhook de récapitulatif global.`);
                 }
             } catch (error) {
                 console.error("Erreur réseau lors de l'envoi du récapitulatif à Discord:", error);
@@ -1251,7 +1282,7 @@
             afficherArmes();
             afficherMunitions();
             afficherPanier(); // Initialize an empty cart display
-            renderGroupes(); // Render groups and their webhooks
+            renderGroupes(); // Render groups and their webhooks, and the global recap webhook
             afficherCommandes();
             updateGeneralTotals();
         });
