@@ -1357,7 +1357,7 @@
 
             const embed = {
                 title: `Nouvelle Commande d'Armes - Groupe: ${commande.nom}`,
-                description: `**ID Commande:** \`${commande.id}\`\n\n**Articles commandés:**\n${itemsFormatted}`,
+                description: `**Articles commandés:**\n${itemsFormatted}`, // Removed ID Commande part
                 fields: [
                     { name: "Total Acheteur", value: `${totalAcheteur.toLocaleString()}$`, inline: true },
                     { name: "Total Revendeur", value: `${totalRevendeur.toLocaleString()}$`, inline: true },
