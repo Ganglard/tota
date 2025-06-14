@@ -11,7 +11,7 @@
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            display: flex;
+            display: flex; /* Utilisation de flexbox pour la mise en page principale */
         }
         h1, h2, h3 {
             text-align: center;
@@ -27,28 +27,33 @@
             margin: 20px auto 10px auto;
             max-width: 1100px;
         }
-        .item-card { /* Nouveau style pour les cartes d'armes/munitions */
+        .item-card {
             background: #23272b;
             border: 2px solid #a0b46a;
             border-radius: 14px;
             color: #e4e4c3;
-            padding: 10px 18px 10px 18px; /* Ajusté pour laisser de la place à l'input */
-            min-width: 120px;
+            padding: 10px 18px;
             text-align: center;
-            /* cursor: pointer; */ /* Le curseur n'est plus sur la carte entière, mais sur le bouton */
-            font-size: 1em;
-            transition: background 0.2s, border 0.2s, color 0.2s;
-            box-shadow: 0 2px 8px #1a1d20;
+            width: 180px; /* Largeur fixe pour les cartes */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            transition: transform 0.2s ease-in-out;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            position: relative; /* Pour positionner l'input */
-            padding-bottom: 40px; /* Espace pour l'input et le bouton */
+            justify-content: space-between; /* Aligne le contenu et pousse le bouton vers le bas */
+            position: relative; /* Pour positionner le conteneur de quantité */
         }
         .item-card:hover {
-            background: #35391f;
-            border-color: #bfcf87;
-            color: #fffbe6;
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .item-card h3 {
+            color: #e4e4c3;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+        .item-card p {
+            margin: 5px 0;
+            font-size: 0.95em;
         }
         .prix {
             color: #a0b46a;
@@ -56,15 +61,14 @@
             margin-top: 4px;
             margin-bottom: 8px; /* Espace avant l'input */
         }
-        .quantity-input-container { /* Conteneur pour l'input de quantité et le bouton d'ajout */
-            position: absolute;
-            bottom: 8px;
-            width: calc(100% - 20px); /* Ajuster la largeur */
+        .quantity-input-container {
             display: flex;
             align-items: center;
             gap: 5px;
+            width: 100%; /* S'assurer qu'il prend toute la largeur disponible */
+            margin-top: 10px; /* Espace au-dessus de l'input */
         }
-        .quantity-input { /* Style pour les inputs de quantité sur les cartes */
+        .quantity-input {
             width: 50px;
             padding: 5px;
             border-radius: 5px;
@@ -72,7 +76,7 @@
             background: #18191a;
             color: #e4e4c3;
             text-align: center;
-            -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+            -moz-appearance: textfield;
         }
         .quantity-input::-webkit-outer-spin-button,
         .quantity-input::-webkit-inner-spin-button {
@@ -80,17 +84,17 @@
             margin: 0;
         }
         .add-to-cart-btn {
-            background: #2ecc71;
+            background-color: #808000;
             color: white;
             border: none;
-            border-radius: 5px;
-            padding: 5px 8px;
+            padding: 8px 15px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8em;
-            transition: background 0.2s;
+            transition: background-color 0.3s ease;
+            flex-grow: 1; /* Permet au bouton de prendre l'espace restant */
         }
         .add-to-cart-btn:hover {
-            background: #27ae60;
+            background-color: #a0b46a;
         }
 
         #panier, #formulaire-nom, #commandes {
@@ -99,7 +103,7 @@
             box-shadow: 0 4px 24px rgba(0,0,0,0.5);
             margin: 20px auto;
             padding: 24px 32px;
-            max-width: 600px;
+            max-width: 800px; /* Largeur augmentée pour une meilleure lisibilité */
             border: 2px solid #a0b46a;
         }
         ul {
@@ -113,7 +117,7 @@
             padding: 8px 14px;
             border-left: 4px solid #a0b46a;
             display: flex;
-            flex-wrap: wrap; /* Permet le retour à la ligne sur petits écrans */
+            flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             gap: 10px;
@@ -123,7 +127,7 @@
             align-items: center;
             gap: 3px;
         }
-        .panier-btn {
+        .panier-btn { /* Boutons +/- (non utilisés actuellement, mais gardés au cas où) */
             background: #a0b46a;
             color: #23272b;
             border: none;
@@ -143,7 +147,7 @@
             background: #808000;
             color: #fff;
         }
-        .quantity-edit-input { /* Style pour l'input de quantité dans le panier */
+        .quantity-edit-input {
             width: 40px;
             padding: 5px;
             border-radius: 5px;
@@ -152,7 +156,7 @@
             color: #e4e4c3;
             text-align: center;
             margin: 0 5px;
-            -moz-appearance: textfield; /* Cache les flèches sur Firefox */
+            -moz-appearance: textfield;
         }
         .quantity-edit-input::-webkit-outer-spin-button,
         .quantity-edit-input::-webkit-inner-spin-button {
@@ -201,24 +205,40 @@
         .total-value {
             color: #fffbe6;
         }
-        button, .item-card { /* Modifier pour .item-card */
+        button, .item-card {
             font-family: inherit;
             font-weight: bold;
         }
-        input[type="text"] {
+        input[type="text"], input[type="number"], select {
             border-radius: 7px;
             border: 1.5px solid #bfcf87;
             padding: 7px 12px;
-            margin-left: 8px;
             background: #18191a;
             color: #e4e4c3;
             outline: none;
             transition: border 0.2s;
+            flex-grow: 1; /* Permet aux inputs de prendre l'espace disponible */
         }
-        input[type="text"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, select:focus {
             border: 2px solid #a0b46a;
             background: #23272b;
         }
+        /* Style pour le bouton "Valider la commande" */
+        #panier > button {
+            background-color: #3498db; /* Couleur bleue pour valider */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+            margin-top: 15px; /* Espace au-dessus du bouton */
+        }
+        #panier > button:hover {
+            background-color: #2980b9;
+        }
+
         table {
             border-collapse: separate;
             border-spacing: 0;
@@ -321,10 +341,10 @@
 
         /* Styles pour la barre latérale des groupes */
         #group-sidebar {
-            width: 250px;
+            width: 280px; /* Largeur augmentée */
             background: #23272b;
             border-right: 2px solid #a0b46a;
-            padding: 20px 10px;
+            padding: 20px 15px; /* Ajustement du padding */
             box-shadow: 2px 0 10px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
@@ -351,7 +371,7 @@
             border-radius: 8px;
             margin-bottom: 8px;
             padding: 10px 12px;
-            cursor: pointer; /* Ajout du curseur pointer sur tout l'élément li */
+            cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -369,7 +389,7 @@
         .group-item span {
             flex-grow: 1;
             text-align: left;
-            pointer-events: none; /* Empêche le span de "capter" le clic, qui est maintenant sur le li */
+            pointer-events: none;
         }
         .group-item button {
             background: none;
@@ -401,7 +421,7 @@
         #main-content {
             flex-grow: 1;
             padding: 0 20px;
-            max-width: calc(100% - 250px);
+            max-width: calc(100% - 280px); /* Ajusté en fonction de la nouvelle largeur du sidebar */
             box-sizing: border-box;
         }
 
@@ -453,7 +473,7 @@
             font-size: 0.9em;
         }
         .channel-item .channel-webhook-input {
-            width: calc(100% - 20px); /* Ajuster la largeur de l'input webhook */
+            width: calc(100% - 20px);
             background: #18191a;
             border: 1px solid #2ecc71;
             color: #e4e4c3;
@@ -495,9 +515,8 @@
         .add-channel-btn:hover {
             background: #2980b9;
         }
-        /* NEW CSS FOR WEEKLY RECAP BUTTON */
         .send-recap-btn {
-            background: #7289DA; /* Discord Blue */
+            background: #7289DA;
             color: white;
             border: none;
             padding: 10px 20px;
@@ -505,17 +524,16 @@
             font-weight: bold;
             cursor: pointer;
             margin-bottom: 14px;
-            margin-left: 10px; /* Adjust spacing as needed */
+            margin-left: 10px;
             transition: background 0.2s;
         }
         .send-recap-btn:hover {
             background: #5b6eae;
         }
 
-        /* NEW CSS for global weekly recap webhook */
         #global-recap-webhook-section {
             background: #23272b;
-            border: 2px solid #7289DA; /* Discord Blue */
+            border: 2px solid #7289DA;
             border-radius: 12px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.3);
             padding: 12px 16px;
@@ -678,7 +696,6 @@
             groupes.forEach(group => {
                 const li = document.createElement('li');
                 li.className = `group-item ${group.id === currentGroupId ? 'active' : ''}`;
-                // Déplace l'événement onclick sur le li
                 li.onclick = () => selectGroup(group.id);
                 li.innerHTML = `
                     <span>${group.name}</span>
@@ -687,8 +704,7 @@
                 groupList.appendChild(li);
             });
             renderGroupWebhooks();
-            updateSelectedGroupNameDisplay(); // Mettre à jour l'affichage du nom du groupe sélectionné
-            // Mettre à jour la valeur de l'input du webhook global
+            updateSelectedGroupNameDisplay();
             document.getElementById('global-recap-webhook-url-input').value = globalWeeklyRecapWebhookUrl;
         }
 
@@ -730,7 +746,7 @@
             currentGroupId = id;
             localStorage.setItem('currentGroupId', currentGroupId);
             renderGroupes();
-            updateSelectedGroupNameDisplay(); // Mettre à jour l'affichage du nom du groupe sélectionné
+            updateSelectedGroupNameDisplay();
         }
 
         function renderGroupWebhooks() {
@@ -742,7 +758,6 @@
 
             if (selectedGroup) {
                 webhookContainer.style.display = 'flex';
-                // L'input pour le webhook de récapitulatif hebdomadaire spécifique au groupe est supprimé d'ici
                 
                 selectedGroup.channels.forEach((channel, index) => {
                     const li = document.createElement('li');
@@ -777,7 +792,6 @@
             }
         }
 
-        // Nouvelle fonction pour mettre à jour le webhook de récapitulatif hebdomadaire global
         function updateGlobalRecapWebhook(newUrl) {
             globalWeeklyRecapWebhookUrl = newUrl;
             saveGlobalWeeklyRecapWebhook();
@@ -809,7 +823,6 @@
             }
         }
 
-        // Nouvelle fonction pour afficher le nom du groupe sélectionné
         function updateSelectedGroupNameDisplay() {
             const selectedGroup = groupes.find(g => g.id === currentGroupId);
             const selectedGroupNameElement = document.getElementById('selected-group-name');
@@ -830,8 +843,8 @@
                 const card = document.createElement('div');
                 card.className = 'item-card';
                 card.innerHTML = `
-                    <span>${arme.nom}</span>
-                    <span class="prix">${prix}</span>
+                    <h3>${arme.nom}</h3>
+                    <p class="prix">Prix: ${prix}</p>
                     <div class="quantity-input-container">
                         <input type="number" class="quantity-input" value="1" min="1">
                         <button class="add-to-cart-btn" onclick="ajouterAuPanier('${arme.nom}', this.previousElementSibling.value)">Ajouter</button>
@@ -849,8 +862,8 @@
                 const card = document.createElement('div');
                 card.className = 'item-card';
                 card.innerHTML = `
-                    <span>${mun.nom}</span>
-                    <span class="prix">${prix}</span>
+                    <h3>${mun.nom}</h3>
+                    <p class="prix">Prix: ${prix}</p>
                     <div class="quantity-input-container">
                         <input type="number" class="quantity-input" value="1" min="1">
                         <button class="add-to-cart-btn" onclick="ajouterAuPanier('${mun.nom}', this.previousElementSibling.value)">Ajouter</button>
@@ -872,9 +885,7 @@
             afficherPanier();
         }
 
-        // Modifié pour prendre la nouvelle quantité directement depuis l'input
         function modifierQuantite(nom, nouvelleQuantite) {
-            // Supprime toutes les occurrences de l'élément pour le reconstruire avec la nouvelle quantité
             panier = panier.filter(item => item !== nom);
             const quantite = parseInt(nouvelleQuantite, 10);
             if (!isNaN(quantite) && quantite > 0) {
@@ -940,9 +951,8 @@
                 alert("Votre panier est vide !");
                 return;
             }
-            // Afficher le formulaire de confirmation (qui affichera le nom du groupe)
             document.getElementById('formulaire-nom').style.display = 'block';
-            updateSelectedGroupNameDisplay(); // S'assurer que le nom du groupe est à jour
+            updateSelectedGroupNameDisplay();
         }
 
         function annulerCommande() {
@@ -956,19 +966,17 @@
                 alert("Veuillez sélectionner un groupe pour cette commande.");
                 return;
             }
-            const nomAcheteur = selectedGroup.name; // Utilise le nom du groupe sélectionné
+            const nomAcheteur = selectedGroup.name;
 
             const nouvelleCommande = { id: `cmd-${Date.now()}`, nom: nomAcheteur, items: [...panier], groupId: currentGroupId };
             
             if (currentEditIndex >= 0) {
                 const oldCommandId = commandes[currentEditIndex].id;
-                // Get the old group for potential old message deletion
                 const oldCommandGroupId = commandes[currentEditIndex].groupId;
                 const oldGroup = groupes.find(g => g.id === oldCommandGroupId);
                 
                 commandes[currentEditIndex] = nouvelleCommande;
                 
-                // If group changed or a message ID exists for the old command, try to delete the old Discord message
                 if ((oldCommandGroupId !== currentGroupId || discordMessageIds[oldCommandId]) && oldGroup) {
                     if (discordMessageIds[oldCommandId]) {
                         for (const channel of oldGroup.channels) {
@@ -983,7 +991,7 @@
                                 }
                             }
                         }
-                        delete discordMessageIds[oldCommandId]; // Clean up the stored message ID
+                        delete discordMessageIds[oldCommandId];
                     }
                 }
             } else {
@@ -992,7 +1000,6 @@
 
             localStorage.setItem('commandesGTA', JSON.stringify(commandes));
             
-            // Send to Discord
             await sendOrderToDiscord(nouvelleCommande);
 
             panier = [];
@@ -1057,7 +1064,7 @@
             currentEditIndex = index;
             panier = [...commandes[index].items];
             afficherPanier();
-            validerCommande(); // Show the confirmation form
+            validerCommande();
         }
 
         async function supprimerCommande(index) {
@@ -1081,7 +1088,7 @@
                             }
                         }
                     }
-                    delete discordMessageIds[commandId]; // Remove message IDs after successful deletion attempts
+                    delete discordMessageIds[commandId];
                     localStorage.setItem('discordMessageIds', JSON.stringify(discordMessageIds));
                 }
 
@@ -1095,7 +1102,7 @@
         function resetCommandes() {
             if (confirm("Ceci va réinitialiser TOUTES les commandes enregistrées pour cette semaine. Êtes-vous sûr ?")) {
                 commandes = [];
-                discordMessageIds = {}; // Also clear message IDs
+                discordMessageIds = {};
                 localStorage.removeItem('commandesGTA');
                 localStorage.removeItem('discordMessageIds');
                 afficherCommandes();
@@ -1140,14 +1147,14 @@
                     { name: "Total Revendeur", value: `${totalRevendeur.toLocaleString()}$`, inline: true },
                     { name: "Bénéfice Estimé", value: `${benefice.toLocaleString()}$`, inline: true }
                 ],
-                color: 8421504, // A nice green/yellow color
+                color: 8421504,
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: "Système de Commande GTA RP"
                 }
             };
 
-            const newDiscordMessageIds = {}; // To store message IDs for this command
+            const newDiscordMessageIds = {};
 
             for (const channel of selectedGroup.channels) {
                 const webhookUrl = channel.webhookUrl;
@@ -1157,45 +1164,45 @@
                 }
 
                 try {
-                    // If editing, try to update the existing message
                     if (currentEditIndex !== -1 && discordMessageIds[commande.id] && discordMessageIds[commande.id][channel.name]) {
                         const messageId = discordMessageIds[commande.id][channel.name];
                         const response = await fetch(`${webhookUrl}/messages/${messageId}`, {
-                            method: "PATCH", // Use PATCH for editing
+                            method: "PATCH",
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ embeds: [embed] })
                         });
-                        if (!response.ok) {
+                        // MODIFICATION APPLIQUÉE ICI
+                        if (response.ok || response.status === 204) {
+                            console.log(`Message Discord mis à jour dans le salon ${channel.name}.`);
+                            newDiscordMessageIds[channel.name] = messageId;
+                        } else {
                             console.error(`Erreur lors de la mise à jour du message Discord (code: ${response.status}):`, await response.text());
-                            // If update fails, try sending a new message
+                            // Tentative d'envoyer un nouveau message si la mise à jour échoue
                             const newResponse = await fetch(webhookUrl, {
                                 method: "POST",
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ embeds: [embed] })
                             });
-                            if (newResponse.ok) {
-                                const data = await newResponse.json();
-                                newDiscordMessageIds[channel.name] = data.id;
+                            if (newResponse.ok || newResponse.status === 204) {
+                                const data = newResponse.status !== 204 ? await newResponse.json() : {};
+                                newDiscordMessageIds[channel.name] = data.id || 'N/A';
                                 console.log(`Nouveau message Discord envoyé après échec de mise à jour dans le salon ${channel.name}.`);
                             } else {
                                 console.error(`Erreur lors de l'envoi d'un nouveau message Discord (code: ${newResponse.status}):`, await newResponse.text());
+                                alert(`Erreur lors de l'envoi à Discord pour le salon "${channel.name}" ! Vérifiez l'URL du webhook.`);
                             }
-                        } else {
-                            console.log(`Message Discord mis à jour dans le salon ${channel.name}.`);
-                            newDiscordMessageIds[channel.name] = messageId; // Keep the same message ID
                         }
                     } else {
-                        // Send a new message
                         const response = await fetch(webhookUrl, {
                             method: "POST",
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ embeds: [embed] })
                         });
-
-                        if (response.ok) {
-                            const data = await response.json();
-                            newDiscordMessageIds[channel.name] = data.id;
-                            console.log(`Commande envoyée à Discord dans le salon ${channel.name}. Message ID: ${data.id}`);
+                        // MODIFICATION APPLIQUÉE ICI
+                        if (response.ok || response.status === 204) {
+                            const data = response.status !== 204 ? await response.json() : {};
+                            newDiscordMessageIds[channel.name] = data.id || 'N/A';
+                            console.log(`Commande envoyée à Discord dans le salon ${channel.name}. Message ID: ${data.id || 'N/A'}`);
                         } else {
                             console.error(`Erreur lors de l'envoi à Discord (code: ${response.status}) dans le salon ${channel.name}:`, await response.text());
                             alert(`Erreur lors de l'envoi à Discord pour le salon "${channel.name}" ! Vérifiez l'URL du webhook.`);
@@ -1223,7 +1230,7 @@
 
             let totalAcheteurRecap = 0;
             let totalRevendeurRecap = 0;
-            const itemsRecap = {}; // { item: count }
+            const itemsRecap = {};
 
             commandes.forEach(cmd => {
                 const { totalAcheteur, totalRevendeur } = calculerTotauxCommande(cmd.items);
@@ -1250,7 +1257,7 @@
                     { name: "Total Revendeur", value: `${totalRevendeurRecap.toLocaleString()}$`, inline: true },
                     { name: "Bénéfice Total", value: `${beneficeRecap.toLocaleString()}$`, inline: true }
                 ],
-                color: 7484644, // A light blue/purple for recap
+                color: 7484644,
                 timestamp: new Date().toISOString(),
                 footer: {
                     text: "Récapitulatif généré par le Système de Commande GTA RP"
@@ -1263,8 +1270,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ embeds: [embed] })
                 });
-
-                if (response.ok) {
+                // MODIFICATION APPLIQUÉE ICI
+                if (response.ok || response.status === 204) {
                     alert("Récapitulatif hebdomadaire global envoyé à Discord avec succès !");
                 } else {
                     console.error(`Erreur lors de l'envoi du récapitulatif à Discord (code: ${response.status}):`, await response.text());
@@ -1281,8 +1288,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             afficherArmes();
             afficherMunitions();
-            afficherPanier(); // Initialize an empty cart display
-            renderGroupes(); // Render groups and their webhooks, and the global recap webhook
+            afficherPanier();
+            renderGroupes();
             afficherCommandes();
             updateGeneralTotals();
         });
