@@ -3,80 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <title>Commande d'Armes GTA RP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-dark: #1a1a1d;
+            --bg-light: #2c2f33;
+            --text-primary: #e0e0e0;
+            --text-secondary: #c0c0c0;
+            --accent-green: #4CAF50; /* A slightly brighter, more vibrant green */
+            --accent-green-dark: #388E3C;
+            --accent-yellow: #FFC107; /* A complementary yellow/amber */
+            --border-color: #4a4a50;
+            --card-bg: #2a2a2d;
+            --shadow-light: rgba(0, 0, 0, 0.2);
+            --shadow-medium: rgba(0, 0, 0, 0.4);
+            --shadow-strong: rgba(0, 0, 0, 0.6);
+            --delete-red: #E74C3C;
+            --delete-red-dark: #C0392B;
+            --info-blue: #3498DB;
+            --info-blue-dark: #2980B9;
+            --warning-orange: #F39C12;
+            --warning-orange-dark: #D35400;
+            --discord-purple: #7289DA;
+            --discord-purple-dark: #5B6EAE;
+        }
+
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            background: #18191a;
-            color: #e4e4c3;
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            display: flex; /* Utilisation de flexbox pour la mise en page principale */
+            display: flex;
+            line-height: 1.6;
         }
         h1, h2, h3 {
             text-align: center;
-            color: #808000;
+            color: var(--accent-green);
             margin-top: 30px;
-            text-shadow: 0 2px 8px #3d3d00;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px var(--accent-green-dark);
+            font-weight: 600;
         }
+        h1 { font-size: 2.5em; }
+        h2 { font-size: 2em; }
+        h3 { font-size: 1.5em; }
+
         #armes, #munitions {
             display: flex;
             flex-wrap: wrap;
-            gap: 14px;
+            gap: 15px; /* Slightly reduced gap */
             justify-content: center;
-            margin: 20px auto 10px auto;
-            max-width: 1100px;
+            margin: 20px auto 30px auto;
+            max-width: 1200px;
+            padding: 0 10px;
         }
         .item-card {
-            background: #23272b;
-            border: 2px solid #a0b46a;
-            border-radius: 14px;
-            color: #e4e4c3;
-            padding: 10px 18px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-secondary);
+            padding: 15px 20px;
             text-align: center;
-            width: 180px; /* Largeur fixe pour les cartes */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            transition: transform 0.2s ease-in-out;
+            width: 200px;
+            box-shadow: 0 6px 12px var(--shadow-medium);
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
             display: flex;
             flex-direction: column;
-            justify-content: space-between; /* Aligne le contenu et pousse le bouton vers le bas */
-            position: relative; /* Pour positionner le conteneur de quantité */
+            justify-content: space-between;
+            position: relative;
         }
         .item-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px var(--shadow-strong);
+            border-color: var(--accent-green);
         }
         .item-card h3 {
-            color: #e4e4c3;
-            margin-top: 10px;
-            margin-bottom: 5px;
+            color: var(--text-primary);
+            margin-top: 5px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
         }
         .item-card p {
-            margin: 5px 0;
+            margin: 8px 0;
             font-size: 0.95em;
         }
         .prix {
-            color: #a0b46a;
-            font-size: 0.98em;
-            margin-top: 4px;
-            margin-bottom: 8px; /* Espace avant l'input */
+            color: var(--accent-yellow);
+            font-size: 1.1em;
+            margin-top: 5px;
+            margin-bottom: 15px;
+            font-weight: 600;
         }
         .quantity-input-container {
             display: flex;
             align-items: center;
-            gap: 5px;
-            width: 100%; /* S'assurer qu'il prend toute la largeur disponible */
-            margin-top: 10px; /* Espace au-dessus de l'input */
+            gap: 10px;
+            width: 100%;
+            margin-top: auto;
+            padding-top: 10px;
         }
         .quantity-input {
-            width: 50px;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #a0b46a;
-            background: #18191a;
-            color: #e4e4c3;
+            width: 60px;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            color: var(--text-primary);
             text-align: center;
             -moz-appearance: textfield;
+            font-size: 0.95em;
         }
         .quantity-input::-webkit-outer-spin-button,
         .quantity-input::-webkit-inner-spin-button {
@@ -84,79 +121,71 @@
             margin: 0;
         }
         .add-to-cart-btn {
-            background-color: #808000;
+            background-color: var(--accent-green);
             color: white;
             border: none;
-            padding: 8px 15px;
+            padding: 10px 18px;
             border-radius: 6px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
-            flex-grow: 1; /* Permet au bouton de prendre l'espace restant */
+            transition: background-color 0.3s ease, transform 0.1s ease;
+            flex-grow: 1;
+            font-size: 0.95em;
         }
         .add-to-cart-btn:hover {
-            background-color: #a0b46a;
+            background-color: var(--accent-green-dark);
+            transform: translateY(-2px);
+        }
+        .add-to-cart-btn:active {
+            transform: translateY(0);
         }
 
         #panier, #formulaire-nom, #commandes {
-            background: #23272b;
-            border-radius: 18px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-            margin: 20px auto;
-            padding: 24px 32px;
-            max-width: 800px; /* Largeur augmentée pour une meilleure lisibilité */
-            border: 2px solid #a0b46a;
+            background: var(--bg-light);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px var(--shadow-strong);
+            margin: 30px auto;
+            padding: 30px 40px;
+            max-width: 900px;
+            border: 1px solid var(--border-color);
         }
         ul {
             list-style: none;
             padding: 0;
         }
         .panier-item {
-            background: #262a2f;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            padding: 8px 14px;
-            border-left: 4px solid #a0b46a;
+            background: var(--bg-dark);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            padding: 12px 18px;
+            border-left: 5px solid var(--accent-green);
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 15px;
+            box-shadow: 0 2px 5px var(--shadow-light);
+        }
+        .panier-item span:first-child {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1em;
         }
         .panier-controls {
             display: flex;
             align-items: center;
-            gap: 3px;
-        }
-        .panier-btn { /* Boutons +/- (non utilisés actuellement, mais gardés au cas où) */
-            background: #a0b46a;
-            color: #23272b;
-            border: none;
-            border-radius: 5px;
-            font-size: 1.1em;
-            font-weight: bold;
-            width: 28px;
-            height: 28px;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s;
-            margin: 0 2px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .panier-btn:hover {
-            background: #808000;
-            color: #fff;
+            gap: 8px;
         }
         .quantity-edit-input {
-            width: 40px;
-            padding: 5px;
-            border-radius: 5px;
-            border: 1px solid #a0b46a;
-            background: #18191a;
-            color: #e4e4c3;
+            width: 50px;
+            padding: 6px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-dark);
+            color: var(--text-primary);
             text-align: center;
-            margin: 0 5px;
+            margin: 0;
             -moz-appearance: textfield;
+            font-size: 0.9em;
         }
         .quantity-edit-input::-webkit-outer-spin-button,
         .quantity-edit-input::-webkit-inner-spin-button {
@@ -164,227 +193,267 @@
             margin: 0;
         }
         .remove-btn {
-            background: #b94a48;
-            color: #fff;
+            background: var(--delete-red);
+            color: white;
             border-radius: 50%;
             border: none;
-            width: 22px;
-            height: 22px;
-            font-size: 1em;
+            width: 28px;
+            height: 28px;
+            font-size: 1.2em;
             font-weight: bold;
-            margin-left: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: background 0.2s ease, transform 0.1s ease;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         .remove-btn:hover {
-            background: #e74c3c;
+            background: var(--delete-red-dark);
+            transform: scale(1.1);
+        }
+        .remove-btn:active {
+            transform: scale(1);
+        }
+        .panier-item .panier-controls > span {
+            margin-left: 10px;
+            color: var(--accent-yellow);
+            font-size: 0.9em;
+            text-align: right;
         }
         .total-block {
-            margin: 10px 0 15px 0;
+            margin: 20px 0 25px 0;
             font-weight: bold;
-            color: #bfcf87;
-            background: #23272b;
+            color: var(--accent-green);
+            background: var(--bg-dark);
             border-radius: 10px;
-            padding: 8px 14px;
-            border: 1.5px solid #a0b46a;
+            padding: 15px 20px;
+            border: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 8px;
+            box-shadow: 0 2px 5px var(--shadow-light);
         }
         .total-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 2px;
+            align-items: center;
         }
         .total-label {
-            color: #a0b46a;
+            color: var(--text-secondary);
+            font-size: 1.05em;
         }
         .total-value {
-            color: #fffbe6;
+            color: var(--text-primary);
+            font-size: 1.1em;
         }
-        button, .item-card {
-            font-family: inherit;
+        .benefice {
+            color: var(--accent-green);
             font-weight: bold;
         }
+        button, .item-card {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+        }
         input[type="text"], input[type="number"], select {
-            border-radius: 7px;
-            border: 1.5px solid #bfcf87;
-            padding: 7px 12px;
-            background: #18191a;
-            color: #e4e4c3;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            background: var(--bg-dark);
+            color: var(--text-primary);
             outline: none;
-            transition: border 0.2s;
-            flex-grow: 1; /* Permet aux inputs de prendre l'espace disponible */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            flex-grow: 1;
+            font-size: 1em;
         }
         input[type="text"]:focus, input[type="number"]:focus, select:focus {
-            border: 2px solid #a0b46a;
-            background: #23272b;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+            background: var(--bg-light);
         }
-        /* Style pour le bouton "Valider la commande" */
         #panier > button {
-            background-color: #3498db; /* Couleur bleue pour valider */
+            background-color: var(--info-blue);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
-            margin-top: 15px; /* Espace au-dessus du bouton */
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            margin-top: 20px;
+            font-size: 1.1em;
         }
         #panier > button:hover {
-            background-color: #2980b9;
+            background-color: var(--info-blue-dark);
+            transform: translateY(-2px);
+        }
+        #panier > button:active {
+            transform: translateY(0);
         }
 
         table {
             border-collapse: separate;
             border-spacing: 0;
             width: 100%;
-            background: #23272b;
+            background: var(--bg-light);
             border-radius: 12px;
             overflow: hidden;
-            margin-top: 10px;
-            border: 2px solid #a0b46a;
+            margin-top: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 10px var(--shadow-medium);
         }
         th, td {
             border: none;
-            padding: 10px;
+            padding: 12px 15px;
             text-align: left;
             vertical-align: top;
         }
         th {
-            background: #1a1d20;
-            color: #808000;
-            font-weight: bold;
-            border-bottom: 2px solid #bfcf87;
+            background: var(--bg-dark);
+            color: var(--accent-green);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            font-size: 1.05em;
         }
         tr:nth-child(even) td {
-            background: #25282c;
+            background: #2a2a2d;
         }
         tr:nth-child(odd) td {
-            background: #23272b;
+            background: var(--bg-light);
+        }
+        td {
+            color: var(--text-secondary);
         }
         .reset-btn {
-            background: #b94a48;
+            background: var(--delete-red);
             color: #fff;
             border: none;
-            padding: 8px 18px;
+            padding: 10px 20px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            margin-bottom: 14px;
-            transition: background 0.2s;
+            margin-bottom: 15px;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-size: 0.95em;
         }
         .reset-btn:hover {
-            background: #e74c3c;
+            background: var(--delete-red-dark);
+            transform: translateY(-2px);
         }
-        .benefice {
-            color: #6fcf97;
-            font-weight: bold;
+        .reset-btn:active {
+            transform: translateY(0);
         }
         .action-btn {
-            background: #3498db;
+            background: var(--info-blue);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 8px 14px;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 0.8em;
-            margin: 2px;
-            transition: background 0.2s;
+            font-size: 0.85em;
+            margin: 4px 2px;
+            transition: background 0.2s ease, transform 0.1s ease;
         }
         .action-btn:hover {
-            background: #2980b9;
+            background: var(--info-blue-dark);
+            transform: translateY(-2px);
+        }
+        .action-btn:active {
+            transform: translateY(0);
         }
         .edit-btn {
-            background: #f39c12;
+            background: var(--warning-orange);
         }
         .edit-btn:hover {
-            background: #d35400;
+            background: var(--warning-orange-dark);
         }
         .delete-btn {
-            background: #e74c3c;
+            background: var(--delete-red);
         }
         .delete-btn:hover {
-            background: #c0392b;
+            background: var(--delete-red-dark);
         }
         .total-general {
-            background: #1a1d20;
-            border-radius: 10px;
-            padding: 12px;
-            margin-top: 20px;
-            border: 2px solid #808000;
+            background: var(--bg-dark);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 30px;
+            border: 1px solid var(--accent-green);
             display: flex;
             justify-content: space-around;
             text-align: center;
+            box-shadow: 0 4px 10px var(--shadow-medium);
         }
         .total-general-item {
             display: flex;
             flex-direction: column;
+            align-items: center;
         }
         .total-general-label {
-            color: #a0b46a;
-            font-size: 0.9em;
-            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            margin-bottom: 8px;
         }
         .total-general-value {
-            color: #fffbe6;
-            font-size: 1.2em;
+            color: var(--text-primary);
+            font-size: 1.3em;
             font-weight: bold;
         }
         .benefice-total {
-            color: #6fcf97;
+            color: var(--accent-green);
         }
 
         /* Styles pour la barre latérale des groupes */
         #group-sidebar {
-            width: 280px; /* Largeur augmentée */
-            background: #23272b;
-            border-right: 2px solid #a0b46a;
-            padding: 20px 15px; /* Ajustement du padding */
-            box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+            width: 300px;
+            background: var(--bg-light);
+            border-right: 1px solid var(--border-color);
+            padding: 25px 20px;
+            box-shadow: 4px 0 15px var(--shadow-strong);
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px; /* Space between main sections */
             overflow-y: auto;
+            flex-shrink: 0;
         }
         .group-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            color: #808000;
-            font-size: 1.1em;
-            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--accent-green);
+            font-size: 1.2em;
+            font-weight: 700;
         }
         .group-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            /* flex-grow: 1; Removed to allow webhook sections to float up */
         }
         .group-item {
-            background: #262a2f;
-            border: 1px solid #a0b46a;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            padding: 10px 12px;
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            padding: 12px 15px;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+            color: var(--text-secondary);
         }
         .group-item:hover {
-            background: #35391f;
+            background: #353940;
+            border-color: var(--accent-green);
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
         }
         .group-item.active {
-            background: #4a502f;
-            border-color: #bfcf87;
+            background: var(--accent-green-dark);
+            border-color: var(--accent-green);
             font-weight: bold;
-            box-shadow: 0 0 10px rgba(176, 255, 0, 0.4);
+            box-shadow: 0 0 12px rgba(76, 175, 80, 0.6);
+            color: white;
         }
         .group-item span {
             flex-grow: 1;
@@ -394,92 +463,114 @@
         .group-item button {
             background: none;
             border: none;
-            color: #e74c3c;
-            font-size: 1.2em;
+            color: var(--delete-red);
+            font-size: 1.3em;
             cursor: pointer;
             margin-left: 10px;
+            transition: color 0.2s;
+            line-height: 1;
         }
         .group-item button:hover {
-            color: #c0392b;
+            color: var(--delete-red-dark);
         }
         .add-group-btn {
-            background: #2ecc71;
+            background: var(--accent-green);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
-            align-self: flex-start;
+            transition: background 0.2s ease, transform 0.1s ease;
             width: 100%;
+            margin-top: 10px;
+            font-size: 1em;
         }
         .add-group-btn:hover {
-            background: #27ae60;
+            background: var(--accent-green-dark);
+            transform: translateY(-2px);
+        }
+        .add-group-btn:active {
+            transform: translateY(0);
         }
 
         #main-content {
             flex-grow: 1;
-            padding: 0 20px;
-            max-width: calc(100% - 280px); /* Ajusté en fonction de la nouvelle largeur du sidebar */
+            padding: 20px 30px;
+            max-width: calc(100% - 300px);
             box-sizing: border-box;
+            overflow-x: hidden;
         }
 
         /* Styles pour la gestion des webhooks */
-        .group-webhook-section {
-            background: #23272b;
-            border: 2px solid #2ecc71;
+        .group-webhook-section, #global-recap-webhook-section {
+            background: var(--bg-dark);
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            padding: 12px 16px;
-            margin-top: 20px;
-            width: 100%;
+            box-shadow: 0 4px 12px var(--shadow-medium);
+            padding: 15px; /* Slightly reduced padding */
+            margin-top: 20px; /* Reduced margin-top */
+            width: calc(100% - 2px); /* Full width of parent with border */
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px; /* Reduced gap */
         }
-        .group-webhook-section h3 {
-            color: #2ecc71;
-            font-size: 1.1em;
+        .group-webhook-section {
+            border: 1px solid var(--accent-green);
+        }
+        #global-recap-webhook-section {
+            border: 1px solid var(--discord-purple);
+        }
+        
+        .group-webhook-section h3, #global-recap-webhook-section h3 {
+            font-size: 1.1em; /* Slightly smaller heading */
             margin: 0 0 10px 0;
             text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            color: var(--accent-green); /* Default for group webhook */
         }
+        #global-recap-webhook-section h3 {
+            color: var(--discord-purple); /* Specific color for global recap */
+        }
+
         .channel-list {
             list-style: none;
             padding: 0;
             margin: 0;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px; /* Further reduced gap for channels */
         }
         .channel-item {
-            background: #262a2f;
+            background: #2a2a2d;
             border-radius: 8px;
-            border-left: 3px solid #2ecc71;
-            padding: 10px;
+            border-left: 4px solid var(--accent-green);
+            padding: 10px; /* Slightly reduced padding */
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 8px; /* Gap inside channel item */
+            box-shadow: 0 1px 3px var(--shadow-light);
         }
-        .channel-item .channel-name-input {
-            flex-grow: 1;
-            min-width: 0;
-            background: #18191a;
-            border: 1px solid #2ecc71;
-            color: #e4e4c3;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
+        .channel-item .channel-name-input,
+        .channel-item .channel-webhook-input,
+        #global-recap-webhook-section input {
+            width: calc(100% - 20px); /* Account for padding */
+            background: var(--bg-dark);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 8px 10px;
+            border-radius: 5px;
+            font-size: 0.85em; /* Slightly smaller font */
         }
-        .channel-item .channel-webhook-input {
-            width: calc(100% - 20px);
-            background: #18191a;
-            border: 1px solid #2ecc71;
-            color: #e4e4c3;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
+        .channel-item .channel-name-input:focus,
+        .channel-item .channel-webhook-input:focus {
+            border-color: var(--accent-green);
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.3);
+        }
+        #global-recap-webhook-section input:focus {
+            border-color: var(--discord-purple);
+            box-shadow: 0 0 0 2px rgba(114, 137, 218, 0.3);
         }
         .channel-item-header {
             display: flex;
@@ -488,76 +579,208 @@
             gap: 10px;
         }
         .channel-item button {
-            background: #e74c3c;
+            background: var(--delete-red);
             color: white;
             border: none;
-            padding: 5px 10px;
-            border-radius: 4px;
+            padding: 5px 10px; /* Smaller button */
+            border-radius: 5px;
             cursor: pointer;
-            font-size: 0.9em;
-            transition: background 0.2s;
+            font-size: 0.8em; /* Smaller font */
+            transition: background 0.2s ease, transform 0.1s ease;
             flex-shrink: 0;
         }
         .channel-item button:hover {
-            background: #c0392b;
+            background: var(--delete-red-dark);
+            transform: translateY(-2px);
+        }
+        .channel-item button:active {
+            transform: translateY(0);
         }
         .add-channel-btn {
-            background: #3498db;
+            background: var(--info-blue);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 10px 15px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: background 0.2s;
-            margin-top: 10px;
+            transition: background 0.2s ease, transform 0.1s ease;
+            margin-top: 5px; /* Reduced margin-top */
+            font-size: 0.95em;
         }
         .add-channel-btn:hover {
-            background: #2980b9;
+            background: var(--info-blue-dark);
+            transform: translateY(-2px);
         }
+        .add-channel-btn:active {
+            transform: translateY(0);
+        }
+
         .send-recap-btn {
-            background: #7289DA;
+            background: var(--discord-purple);
             color: white;
             border: none;
-            padding: 10px 20px;
+            padding: 12px 22px;
             border-radius: 8px;
             font-weight: bold;
             cursor: pointer;
-            margin-bottom: 14px;
+            margin-bottom: 15px;
             margin-left: 10px;
-            transition: background 0.2s;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-size: 1em;
         }
         .send-recap-btn:hover {
-            background: #5b6eae;
+            background: var(--discord-purple-dark);
+            transform: translateY(-2px);
+        }
+        .send-recap-btn:active {
+            transform: translateY(0);
+        }
+        #formulaire-nom > button {
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-size: 1.1em;
+            margin-top: 15px;
+            border: none;
+            color: white;
+        }
+        #formulaire-nom > button:hover {
+            transform: translateY(-2px);
+        }
+        #formulaire-nom > button:active {
+            transform: translateY(0);
+        }
+        #formulaire-nom > button:first-of-type { /* Enregistrer/Envoyer */
+            background: var(--accent-green);
+        }
+        #formulaire-nom > button:first-of-type:hover {
+            background: var(--accent-green-dark);
+        }
+        #formulaire-nom > button:last-of-type { /* Annuler */
+            background: var(--delete-red);
+            margin-left: 10px;
+        }
+        #formulaire-nom > button:last-of-type:hover {
+            background: var(--delete-red-dark);
+        }
+        
+        /* Responsive Adjustments */
+        @media (max-width: 1024px) {
+            #group-sidebar {
+                width: 250px;
+            }
+            #main-content {
+                max-width: calc(100% - 250px);
+                padding: 15px 20px;
+            }
+            .item-card {
+                width: 160px;
+                padding: 12px 15px;
+            }
+            #armes, #munitions {
+                gap: 15px;
+            }
+            #panier, #formulaire-nom, #commandes {
+                padding: 25px 30px;
+            }
         }
 
-        #global-recap-webhook-section {
-            background: #23272b;
-            border: 2px solid #7289DA;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            padding: 12px 16px;
-            margin-top: 20px;
-            width: 100%;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            #group-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+                padding: 20px;
+                box-shadow: 0 4px 10px var(--shadow-medium);
+                gap: 15px; /* Reduced gap for mobile sidebar */
+            }
+            .group-webhook-section, #global-recap-webhook-section {
+                margin-top: 15px; /* Reduced margin on mobile */
+            }
+            #main-content {
+                max-width: 100%;
+                padding: 20px;
+            }
+            #armes, #munitions {
+                flex-direction: column;
+                align-items: center;
+                gap: 15px;
+                max-width: 100%;
+            }
+            .item-card {
+                width: 80%; /* Make cards wider on small screens */
+                max-width: 300px;
+            }
+            #panier, #formulaire-nom, #commandes {
+                max-width: 100%;
+                margin: 20px auto;
+                padding: 20px;
+                box-sizing: border-box;
+            }
+            .panier-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .panier-controls {
+                width: 100%;
+                justify-content: space-between;
+                margin-top: 10px;
+            }
+            .total-general {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .send-recap-btn {
+                margin-left: 0;
+                width: 100%;
+            }
+            .reset-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            #formulaire-nom > button {
+                width: calc(50% - 5px); /* Two buttons side by side */
+                margin-left: 0 !important;
+            }
+            #formulaire-nom > button:last-of-type {
+                margin-left: 10px !important;
+            }
         }
-        #global-recap-webhook-section h3 {
-            color: #7289DA;
-            font-size: 1.1em;
-            margin: 0 0 5px 0;
-            text-align: left;
-        }
-        #global-recap-webhook-section input {
-            background: #18191a;
-            border: 1px solid #7289DA;
-            color: #e4e4c3;
-            padding: 6px 10px;
-            border-radius: 4px;
-            font-size: 0.9em;
-            width: calc(100% - 20px);
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2em; }
+            h2 { font-size: 1.6em; }
+            h3 { font-size: 1.3em; }
+            .item-card {
+                width: 95%;
+                padding: 10px;
+            }
+            .add-to-cart-btn, #panier > button, .add-group-btn, .add-channel-btn, .send-recap-btn, .reset-btn, .action-btn {
+                padding: 8px 12px;
+                font-size: 0.9em;
+            }
+            th, td {
+                padding: 8px 10px;
+                font-size: 0.9em;
+            }
+            .panier-item .panier-controls > span {
+                font-size: 0.8em;
+            }
+            .group-webhook-section h3, #global-recap-webhook-section h3 {
+                font-size: 1em;
+            }
+            .channel-item .channel-name-input,
+            .channel-item .channel-webhook-input,
+            #global-recap-webhook-section input {
+                font-size: 0.8em;
+                padding: 6px 8px;
+            }
         }
     </style>
 </head>
@@ -669,18 +892,9 @@
         let commandes = JSON.parse(localStorage.getItem('commandesGTA')) || [];
 
         // --- Gestion des Groupes et Webhooks ---
-        let groupes = JSON.parse(localStorage.getItem('discordGroups')) || [{
-            id: 'default',
-            name: 'Général',
-            channels: [{
-                name: 'Commandes',
-                webhookUrl: ''
-            }]
-        }];
-        let currentGroupId = localStorage.getItem('currentGroupId') || groupes[0].id;
-
-        // Nouvelle variable pour le webhook de récapitulatif hebdomadaire global
-        let globalWeeklyRecapWebhookUrl = localStorage.getItem('globalWeeklyRecapWebhookUrl') || '';
+        let groupes = JSON.parse(localStorage.getItem('discordGroups')) || [];
+        let currentGroupId = localStorage.getItem('currentGroupId') || null; // Initialise à null
+        let globalWeeklyRecapWebhookUrl = localStorage.getItem('globalWeeklyRecapWebhookUrl') || ''; // Initialise le webhook de récap global
 
         function saveGroupes() {
             localStorage.setItem('discordGroups', JSON.stringify(groupes));
@@ -699,7 +913,7 @@
                 li.onclick = () => selectGroup(group.id);
                 li.innerHTML = `
                     <span>${group.name}</span>
-                    ${group.id !== 'default' ? `<button onclick="event.stopPropagation(); supprimerGroupe('${group.id}')" title="Supprimer le groupe">&times;</button>` : ''}
+                    <button onclick="event.stopPropagation(); supprimerGroupe('${group.id}')" title="Supprimer le groupe">&times;</button>
                 `;
                 groupList.appendChild(li);
             });
@@ -714,10 +928,7 @@
                 const newGroup = {
                     id: `group-${Date.now()}`,
                     name: groupName.trim(),
-                    channels: [{
-                        name: 'Commandes',
-                        webhookUrl: ''
-                    }]
+                    channels: [] // Pas de canal par défaut
                 };
                 groupes.push(newGroup);
                 saveGroupes();
@@ -727,15 +938,11 @@
         }
 
         function supprimerGroupe(id) {
-            if (id === 'default') {
-                alert("Vous ne pouvez pas supprimer le groupe 'Général'.");
-                return;
-            }
             if (confirm(`Êtes-vous sûr de vouloir supprimer le groupe "${groupes.find(g => g.id === id).name}" ?`)) {
                 groupes = groupes.filter(group => group.id !== id);
                 saveGroupes();
                 if (currentGroupId === id) {
-                    currentGroupId = groupes[0].id;
+                    currentGroupId = groupes.length > 0 ? groupes[0].id : null; // Sélectionne le premier groupe ou null
                     localStorage.setItem('currentGroupId', currentGroupId);
                 }
                 renderGroupes();
@@ -799,16 +1006,19 @@
 
         function ajouterSalon() {
             const selectedGroup = groupes.find(g => g.id === currentGroupId);
-            if (selectedGroup) {
-                const channelName = prompt("Nom du nouveau salon Discord :");
-                if (channelName && channelName.trim() !== '') {
-                    selectedGroup.channels.push({
-                        name: channelName.trim(),
-                        webhookUrl: ''
-                    });
-                    saveGroupes();
-                    renderGroupWebhooks();
-                }
+            if (!selectedGroup) {
+                alert("Veuillez d'abord sélectionner un groupe.");
+                return;
+            }
+
+            const channelName = prompt("Nom du nouveau salon Discord :");
+            if (channelName && channelName.trim() !== '') {
+                selectedGroup.channels.push({
+                    name: channelName.trim(),
+                    webhookUrl: ''
+                });
+                saveGroupes();
+                renderGroupWebhooks();
             }
         }
 
@@ -927,7 +1137,7 @@
                                onchange="modifierQuantite('${nom}', this.value)" 
                                onkeyup="if(event.key==='Enter') modifierQuantite('${nom}', this.value)">
                         <button class="remove-btn" onclick="supprimerDuPanier('${nom}')" title="Supprimer"><span>&times;</span></button>
-                        <span style="margin-left:10px; color:#a0b46a;">
+                        <span style="margin-left:10px; color:var(--accent-yellow);">
                             Acheteur: ${(prixAcheteur * quantite).toLocaleString()}$<br>
                             Revendeur: ${(prixRevendeur * quantite).toLocaleString()}$
                         </span>
@@ -949,6 +1159,10 @@
         function validerCommande() {
             if (panier.length === 0) {
                 alert("Votre panier est vide !");
+                return;
+            }
+            if (!currentGroupId) {
+                alert("Veuillez sélectionner un groupe pour cette commande ou en créer un si vous n'en avez pas.");
                 return;
             }
             document.getElementById('formulaire-nom').style.display = 'block';
@@ -1063,6 +1277,7 @@
         function editerCommande(index) {
             currentEditIndex = index;
             panier = [...commandes[index].items];
+            currentGroupId = commandes[index].groupId; // Set current group to the command's group
             afficherPanier();
             validerCommande();
         }
@@ -1129,6 +1344,7 @@
         async function sendOrderToDiscord(commande) {
             const selectedGroup = groupes.find(g => g.id === commande.groupId);
             if (!selectedGroup || selectedGroup.channels.length === 0) {
+                alert("Le groupe sélectionné n'a pas de salons configurés pour l'envoi Discord. La commande sera enregistrée localement mais non envoyée.");
                 console.warn("Aucun groupe sélectionné ou aucun salon configuré pour l'envoi Discord.");
                 return;
             }
@@ -1160,7 +1376,7 @@
                 const webhookUrl = channel.webhookUrl;
                 if (!webhookUrl || !webhookUrl.startsWith("https://discord.com/api/webhooks/")) {
                     console.warn(`Webhook URL non valide pour le salon '${channel.name}' du groupe '${selectedGroup.name}'.`);
-                    continue;
+                    continue; // Continue to the next channel without alerting
                 }
 
                 try {
@@ -1171,26 +1387,23 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ embeds: [embed] })
                         });
-                        // MODIFICATION APPLIQUÉE ICI
-                        if (response.ok || response.status === 204) {
-                            console.log(`Message Discord mis à jour dans le salon ${channel.name}.`);
-                            newDiscordMessageIds[channel.name] = messageId;
-                        } else {
+                        if (!response.ok) {
                             console.error(`Erreur lors de la mise à jour du message Discord (code: ${response.status}):`, await response.text());
-                            // Tentative d'envoyer un nouveau message si la mise à jour échoue
                             const newResponse = await fetch(webhookUrl, {
                                 method: "POST",
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify({ embeds: [embed] })
                             });
-                            if (newResponse.ok || newResponse.status === 204) {
-                                const data = newResponse.status !== 204 ? await newResponse.json() : {};
-                                newDiscordMessageIds[channel.name] = data.id || 'N/A';
+                            if (newResponse.ok) {
+                                const data = await newResponse.json();
+                                newDiscordMessageIds[channel.name] = data.id;
                                 console.log(`Nouveau message Discord envoyé après échec de mise à jour dans le salon ${channel.name}.`);
                             } else {
                                 console.error(`Erreur lors de l'envoi d'un nouveau message Discord (code: ${newResponse.status}):`, await newResponse.text());
-                                alert(`Erreur lors de l'envoi à Discord pour le salon "${channel.name}" ! Vérifiez l'URL du webhook.`);
                             }
+                        } else {
+                            console.log(`Message Discord mis à jour dans le salon ${channel.name}.`);
+                            newDiscordMessageIds[channel.name] = messageId;
                         }
                     } else {
                         const response = await fetch(webhookUrl, {
@@ -1198,19 +1411,19 @@
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({ embeds: [embed] })
                         });
-                        // MODIFICATION APPLIQUÉE ICI
-                        if (response.ok || response.status === 204) {
-                            const data = response.status !== 204 ? await response.json() : {};
-                            newDiscordMessageIds[channel.name] = data.id || 'N/A';
-                            console.log(`Commande envoyée à Discord dans le salon ${channel.name}. Message ID: ${data.id || 'N/A'}`);
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            newDiscordMessageIds[channel.name] = data.id;
+                            console.log(`Commande envoyée à Discord dans le salon ${channel.name}. Message ID: ${data.id}`);
                         } else {
                             console.error(`Erreur lors de l'envoi à Discord (code: ${response.status}) dans le salon ${channel.name}:`, await response.text());
-                            alert(`Erreur lors de l'envoi à Discord pour le salon "${channel.name}" ! Vérifiez l'URL du webhook.`);
+                            // Removed the alert here
                         }
                     }
                 } catch (error) {
                     console.error(`Erreur réseau lors de l'envoi à Discord pour le salon ${channel.name}:`, error);
-                    alert(`Erreur réseau lors de l'envoi à Discord pour le salon "${channel.name}" !`);
+                    // Removed the alert here
                 }
             }
             discordMessageIds[commande.id] = newDiscordMessageIds;
@@ -1270,8 +1483,8 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ embeds: [embed] })
                 });
-                // MODIFICATION APPLIQUÉE ICI
-                if (response.ok || response.status === 204) {
+
+                if (response.ok) {
                     alert("Récapitulatif hebdomadaire global envoyé à Discord avec succès !");
                 } else {
                     console.error(`Erreur lors de l'envoi du récapitulatif à Discord (code: ${response.status}):`, await response.text());
@@ -1292,6 +1505,17 @@
             renderGroupes();
             afficherCommandes();
             updateGeneralTotals();
+
+            // Initialiser currentGroupId si des groupes existent, sinon à null
+            if (groupes.length > 0 && !currentGroupId) {
+                currentGroupId = groupes[0].id;
+                localStorage.setItem('currentGroupId', currentGroupId);
+                renderGroupes(); // Re-render pour activer le premier groupe
+            } else if (groupes.length === 0) {
+                currentGroupId = null; // Assure que c'est null si aucun groupe
+                localStorage.removeItem('currentGroupId');
+                renderGroupes(); // Met à jour l'affichage pour masquer les webhooks de groupe
+            }
         });
     </script>
 </body>
